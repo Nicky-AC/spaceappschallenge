@@ -1,0 +1,11 @@
+# NASA Space Apps Challenge 2026
+
+Proyecto para el NASA International Space Apps Challenge 2026 (14 y 15 de noviembre de 2026), participación remota desde Colombia.
+
+## Contenido
+
+- [`agujero_negro/`](agujero_negro/): simulación interactiva de un agujero negro (órbitas, desvío de la luz y descenso al horizonte) calculada con la métrica de Schwarzschild. Abre `agujero_negro/simulacion.html` en el navegador.
+
+## Ideas en exploración
+
+- Regresión simbólica (PySR, PySINDy) para redescubrir leyes físicas a partir de datos: la tercera ley de Kepler con el NASA Exoplanet Archive, la desviación de la luz cerca de un agujero negro y la ecuación de Burgers.

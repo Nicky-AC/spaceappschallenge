@@ -1,0 +1,830 @@
+<title>Horizonte de Sucesos</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: columna editorial; cada sección es un lienzo vivo con su panel de lectura al lado. Tema oscuro único: es el espacio. */
+:root{
+  --void:#06070b;
+  --deep:#0b0e16;
+  --panel:#121726;
+  --line:#262c40;
+  --ink:#ecebe6;
+  --muted:#959cb2;
+  --disk:#ff9d42;
+  --hot:#ffd58a;
+  --light:#82c3ff;
+  --alarm:#ff6767;
+  --on-disk:#1c0f02;
+  --f-display:"Bricolage Grotesque","Avenir Next",system-ui,sans-serif;
+  --f-body:"Instrument Sans","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{background:var(--void)}
+body{background:var(--void);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:40px 64px;display:flex;flex-direction:column;gap:80px}
+h1,h2{font-family:var(--f-display);text-wrap:balance;margin:0}
+h1{font-weight:800;font-size:clamp(2.7rem,8vw,5.6rem);line-height:.92;letter-spacing:-.035em}
+h2{font-weight:600;font-size:clamp(1.7rem,3.6vw,2.5rem);line-height:1.05;letter-spacing:-.02em}
+p{margin:0}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--disk)}
+.lede{max-width:62ch;color:var(--muted);font-size:1.06rem}
+.lede strong{color:var(--ink);font-weight:600}
+.hero{display:flex;flex-direction:column;gap:20px}
+.head{display:flex;flex-direction:column;gap:12px;margin-bottom:28px}
+
+.massbar{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding-block:18px;margin-top:12px}
+.label{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.seg{display:flex;flex-wrap:wrap;gap:8px}
+.massrange{display:flex;align-items:center;gap:10px;flex:1 1 260px;min-width:0}
+.massrange input{flex:1;min-width:0}
+.massrange output{font-family:var(--f-mono);font-size:13px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.note{flex-basis:100%;color:var(--muted);font-size:14px}
+
+button.chip{font:500 14px/1 var(--f-body);color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:10px 14px;cursor:pointer;transition:border-color .15s,background .15s}
+button.chip:hover{border-color:var(--muted)}
+button.chip[aria-pressed="true"]{background:var(--disk);color:var(--on-disk);border-color:var(--disk)}
+button.chip.ghost{background:transparent}
+:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
+input[type=range]{accent-color:var(--disk);width:100%}
+
+.sim{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:28px;align-items:start}
+@media (max-width:820px){.sim{grid-template-columns:minmax(0,1fr)}}
+.stage{display:flex;flex-direction:column;gap:10px;min-width:0}
+.stage canvas{display:block;width:100%;max-width:100%;aspect-ratio:1;border:1px solid var(--line);border-radius:4px;background:var(--deep);touch-action:none;cursor:crosshair}
+.stats{font-family:var(--f-mono);font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.side{display:flex;flex-direction:column;gap:22px;min-width:0}
+.group{display:flex;flex-direction:column;gap:10px}
+.btnrow{display:flex;flex-wrap:wrap;gap:8px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field .row{display:flex;justify-content:space-between;gap:12px;font-size:14px}
+.field output{font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--hot)}
+
+.legend{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.legend li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;align-items:start;font-size:14px}
+.legend b{font-weight:600}
+.legend span.t{color:var(--muted)}
+.sw{height:0;margin-top:10px;border-top:2px dashed}
+.sw.h{border-top:8px solid #000;box-shadow:0 0 0 1px var(--hot);margin-top:6px}
+.sw.p{border-color:var(--light)}
+.sw.i{border-color:var(--disk)}
+
+.read{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 16px;margin:0;font-size:14px;border-top:1px solid var(--line);padding-top:16px}
+.read dt{color:var(--muted)}
+.read dd{margin:0;text-align:right;font-family:var(--f-mono);font-size:13px;font-variant-numeric:tabular-nums}
+.callout{border-left:2px solid var(--hot);padding:4px 0 4px 14px;font-size:14px;color:var(--muted)}
+.callout b{color:var(--ink);font-weight:600}
+
+.journey{display:flex;flex-direction:column;gap:24px}
+.distctl{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px}
+.distctl .field{flex:1 1 320px;min-width:0}
+.views{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.views figure{margin:0;display:flex;flex-direction:column;gap:8px;min-width:0}
+.views canvas{display:block;width:100%;max-width:100%;aspect-ratio:1;border:1px solid var(--line);border-radius:4px;background:var(--deep)}
+.views figcaption{font-size:13px;color:var(--muted)}
+.views figcaption b{color:var(--ink);font-weight:600}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:4px;overflow:hidden}
+@media (max-width:820px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:480px){.cards{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--void);padding:16px 18px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.card .k{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.card .v{font-family:var(--f-display);font-weight:600;font-size:1.55rem;line-height:1.15;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+.card .s{color:var(--muted);font-size:13px}
+.swatch{display:inline-block;width:.8em;height:.8em;border-radius:50%;vertical-align:baseline;margin-right:8px;border:1px solid var(--line)}
+.lvl{align-self:flex-start;font:500 11px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;padding:5px 9px;border-radius:999px;border:1px solid currentColor}
+.lvl[data-l="0"]{color:var(--muted)}
+.lvl[data-l="1"]{color:var(--light)}
+.lvl[data-l="2"]{color:var(--hot)}
+.lvl[data-l="3"]{color:var(--disk)}
+.lvl[data-l="4"]{color:var(--alarm)}
+.lvl[data-l="5"]{color:var(--on-disk);background:var(--alarm);border-color:var(--alarm)}
+
+footer{border-top:1px solid var(--line);padding-top:24px;display:flex;flex-direction:column;gap:10px;color:var(--muted);font-size:13px;max-width:80ch}
+footer b{color:var(--ink);font-weight:600}
+@media (prefers-reduced-motion:reduce){button.chip{transition:none}}
+</style>
+
+<div class="wrap">
+  <header class="hero">
+    <p class="eyebrow">Relatividad general · Simulación interactiva</p>
+    <h1>Horizonte de sucesos</h1>
+    <p class="lede">Lanza materia, dispara rayos de luz y baja hacia un agujero negro real. Cada trayectoria se calcula con la <strong>métrica de Schwarzschild</strong>, la solución de las ecuaciones de Einstein para un agujero negro que no gira.</p>
+    <div class="massbar" role="group" aria-labelledby="mass-label">
+      <span id="mass-label" class="label">Agujero negro</span>
+      <div class="seg">
+        <button class="chip" type="button" data-preset="cyg" aria-pressed="false">Cygnus X-1</button>
+        <button class="chip" type="button" data-preset="sgr" aria-pressed="true">Sagitario A*</button>
+        <button class="chip" type="button" data-preset="m87" aria-pressed="false">M87*</button>
+      </div>
+      <label class="massrange" for="mass"><span class="label">Otra masa</span><input type="range" id="mass" min="0" max="10.5" step="0.01" value="6.63"><output id="massOut" for="mass"></output></label>
+      <p id="massNote" class="note"></p>
+    </div>
+  </header>
+
+  <section id="materia" aria-labelledby="h-materia">
+    <div class="head">
+      <p class="eyebrow">Materia</p>
+      <h2 id="h-materia">Órbitas que no se cierran</h2>
+      <p class="lede">Arrastra desde cualquier punto del lienzo para lanzar una partícula: la flecha marca su velocidad. Un toque sin arrastrar la suelta en reposo. Lejos del agujero las órbitas parecen las de Newton; cerca, <strong>giran como los pétalos de una flor</strong>, y por dentro del círculo naranja ya no existe ninguna órbita estable.</p>
+    </div>
+    <div class="sim">
+      <div class="stage">
+        <canvas id="orb" aria-label="Lienzo de órbitas alrededor del agujero negro. Arrastra para lanzar partículas."></canvas>
+        <p class="stats" id="orbStats">&nbsp;</p>
+      </div>
+      <aside class="side">
+        <div class="group">
+          <span class="label">Experimentos</span>
+          <div class="btnrow">
+            <button class="chip" type="button" data-orb="estable">Órbita estable</button>
+            <button class="chip" type="button" data-orb="roseta">Precesión</button>
+            <button class="chip" type="button" data-orb="isco">Al borde de la ISCO</button>
+            <button class="chip" type="button" data-orb="honda">Remolino y escape</button>
+            <button class="chip" type="button" data-orb="caida">Caída directa</button>
+          </div>
+        </div>
+        <div class="group">
+          <div class="btnrow">
+            <button class="chip ghost" type="button" id="pause" aria-pressed="false">Pausar</button>
+            <button class="chip ghost" type="button" id="clear">Limpiar</button>
+          </div>
+          <div class="field">
+            <div class="row"><label for="speed">Velocidad de la simulación</label><output id="speedOut" for="speed">1×</output></div>
+            <input type="range" id="speed" min="-2" max="2" step="0.25" value="0">
+          </div>
+        </div>
+        <ul class="legend">
+          <li><span class="sw h"></span><span><b>Horizonte de sucesos (2 M).</b> <span class="t">Lo que lo cruza no vuelve a salir, ni siquiera la luz.</span></span></li>
+          <li><span class="sw p"></span><span><b>Esfera de fotones (3 M).</b> <span class="t">Aquí la luz puede dar vueltas en círculo.</span></span></li>
+          <li><span class="sw i"></span><span><b>ISCO (6 M).</b> <span class="t">La última órbita circular estable. Más adentro, todo cae en espiral.</span></span></li>
+        </ul>
+        <dl class="read" id="orbRead"></dl>
+      </aside>
+    </div>
+  </section>
+
+  <section id="luz" aria-labelledby="h-luz">
+    <div class="head">
+      <p class="eyebrow">Luz</p>
+      <h2 id="h-luz">La gravedad dobla la luz</h2>
+      <p class="lede">Cada línea es un rayo de luz que llega desde la izquierda. Los que pasan lejos solo se desvían; los que pasan a menos de <strong>5,2 M</strong> del centro caen. <strong>Toca el lienzo</strong> para lanzar tu propio rayo a esa altura. La forma de las trayectorias es igual para cualquier masa: solo cambia la escala.</p>
+    </div>
+    <div class="sim">
+      <div class="stage">
+        <canvas id="lit" aria-label="Lienzo de rayos de luz desviados por el agujero negro. Toca para lanzar un rayo."></canvas>
+      </div>
+      <aside class="side">
+        <div class="field">
+          <div class="row"><label for="nrays">Número de rayos</label><output id="nraysOut" for="nrays"></output></div>
+          <input type="range" id="nrays" min="5" max="61" step="2" value="31">
+        </div>
+        <div class="field">
+          <div class="row"><label for="beam">Ancho del haz</label><output id="beamOut" for="beam"></output></div>
+          <input type="range" id="beam" min="2" max="15" step="0.5" value="9">
+        </div>
+        <div class="group">
+          <span class="label">Tu rayo</span>
+          <dl class="read" id="rayRead"></dl>
+          <div class="btnrow">
+            <button class="chip" type="button" data-b="5.25">Rozar el borde</button>
+            <button class="chip" type="button" data-b="5.1">Un poco más cerca</button>
+            <button class="chip" type="button" data-b="12">Pasar lejos</button>
+          </div>
+        </div>
+        <p class="callout"><b>El borde crítico:</b> un rayo que pasa a exactamente 3√3 M ≈ 5,196 M queda atrapado dando vueltas en la esfera de fotones. Esa luz forma el anillo brillante de las fotos del Event Horizon Telescope.</p>
+      </aside>
+    </div>
+  </section>
+
+  <section id="viaje" aria-labelledby="h-viaje">
+    <div class="head">
+      <p class="eyebrow">Tú</p>
+      <h2 id="h-viaje">Descenso a <span id="jName">Sagitario A*</span></h2>
+      <p class="lede">Mueve el control para acercarte al horizonte. Imagina que flotas quieta en tu nave, sostenida por los cohetes, y mira cómo cambian el tiempo, la luz, el cielo y tu propio cuerpo.</p>
+    </div>
+    <div class="journey">
+      <div class="distctl">
+        <div class="field">
+          <div class="row"><label for="dist">Distancia al centro</label><output id="distOut" for="dist"></output></div>
+          <input type="range" id="dist" min="0" max="1000" step="1" value="560">
+        </div>
+        <button class="chip" type="button" id="fall">Caer hacia el horizonte</button>
+      </div>
+      <div class="views">
+        <figure><canvas id="visor" aria-label="Vista desde la nave hacia el agujero negro"></canvas><figcaption><b>Lo que ves.</b> <span id="visorCap"></span></figcaption></figure>
+        <figure><canvas id="body" aria-label="Tu cuerpo estirado por las fuerzas de marea"></canvas><figcaption><b>Lo que sientes.</b> Los pies, más cerca, caen con más fuerza que la cabeza: eso te estira.</figcaption></figure>
+      </div>
+      <div class="cards" id="cards"></div>
+      <p class="callout" id="tideNote"></p>
+    </div>
+  </section>
+
+  <footer>
+    <p><b>Cómo se calcula.</b> Agujero negro sin rotación ni carga (métrica de Schwarzschild). Las distancias van en unidades de M = GM/c², así que el horizonte está en 2 M. Las órbitas integran la geodésica exacta en el plano ecuatorial con Runge-Kutta de orden 4, en el tiempo propio de cada partícula. Los rayos usan la ecuación exacta de la luz, d²u/dφ² + u = 3Mu². La marea es la aproximación 2GMh/r³ para un cuerpo de 2 m, y la caída libre parte del reposo.</p>
+    <p><b>Masas.</b> Cygnus X-1 ≈ 21 masas solares (Miller-Jones et al., 2021). Sagitario A* ≈ 4,3 millones (GRAVITY y Event Horizon Telescope). M87* ≈ 6.500 millones (Event Horizon Telescope, 2019).</p>
+  </footer>
+</div>
+
+<script>
+(() => {
+  'use strict';
+  // ---------- Constantes físicas ----------
+  const MSUN_SEC = 4.925491e-6;   // GM☉/c³ en segundos
+  const MSUN_M = 1476.625;        // GM☉/c² en metros
+  const C = 299792458, G0 = 9.80665;
+  const RCRIT = 3 * Math.sqrt(3); // parámetro de impacto crítico de la luz (en M)
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const T = {deep:css('--deep'), line:css('--line'), ink:css('--ink'), muted:css('--muted'), disk:css('--disk'), hot:css('--hot'), light:css('--light'), alarm:css('--alarm')};
+
+  const PRESETS = {
+    cyg:{m:21.2, name:'Cygnus X-1', note:'Agujero negro estelar en nuestra galaxia, a unos 7.000 años luz. Nació del colapso de una estrella gigante.'},
+    sgr:{m:4.3e6, name:'Sagitario A*', note:'El agujero negro supermasivo del centro de la Vía Láctea, a unos 27.000 años luz.'},
+    m87:{m:6.5e9, name:'M87*', note:'En el centro de la galaxia M87, a 55 millones de años luz. Fue el primer agujero negro fotografiado (2019).'}
+  };
+  let massSun = PRESETS.sgr.m, massName = PRESETS.sgr.name;
+
+  // ---------- Formato en español ----------
+  const SUP = {'-':'⁻','0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹'};
+  const nf3 = new Intl.NumberFormat('es-CO', {maximumSignificantDigits:3});
+  const nf2 = new Intl.NumberFormat('es-CO', {maximumSignificantDigits:2});
+  function sci(x){
+    let e = Math.floor(Math.log10(Math.abs(x)));
+    let m = x / Math.pow(10, e);
+    if (Math.abs(m) >= 9.95){ m /= 10; e++; }
+    return nf2.format(m) + ' × 10' + String(e).split('').map(c => SUP[c]).join('');
+  }
+  function num(x){
+    if (!isFinite(x)) return '∞';
+    const a = Math.abs(x);
+    if (a === 0) return '0';
+    if (a >= 1e7 || a < 0.01) return sci(x);
+    return nf3.format(x);
+  }
+  function fmtDist(m){
+    if (m < 1e3) return num(m) + ' m';
+    if (m < 1e9) return num(m/1e3) + ' km';
+    if (m < 1e15) return num(m/1.496e11) + ' UA';
+    return num(m/9.461e15) + ' años luz';
+  }
+  function fmtTime(s){
+    if (!isFinite(s)) return '∞';
+    if (s < 1e-3) return num(s*1e6) + ' µs';
+    if (s < 1) return num(s*1e3) + ' ms';
+    if (s < 120) return num(s) + ' s';
+    if (s < 7200) return num(s/60) + ' min';
+    if (s < 172800) return num(s/3600) + ' h';
+    if (s < 6.312e7) return num(s/86400) + ' días';
+    return num(s/3.156e7) + ' años';
+  }
+  function fmtMass(m){
+    if (m < 1e6) return num(m) + ' M☉';
+    if (m < 1e9) return nf3.format(m/1e6) + ' millones de M☉';
+    return nf3.format(m/1e9) + ' mil millones de M☉';
+  }
+
+  // ---------- Lienzos ----------
+  const canvases = [];
+  function fit(c){
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = Math.max(1, Math.round(c.clientWidth * dpr)), h = Math.max(1, Math.round(c.clientHeight * dpr));
+    if (c.width !== w || c.height !== h){ c.width = w; c.height = h; }
+    return dpr;
+  }
+  function makeStars(n, seed){
+    let s = seed;
+    const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647;
+    return Array.from({length:n}, () => [rnd()*2-1, rnd()*2-1, rnd(), rnd()]);
+  }
+  function drawStars(ctx, stars, w, h, alpha){
+    for (const [x,y,b] of stars){
+      ctx.globalAlpha = alpha * (0.25 + 0.75*b*b);
+      ctx.fillStyle = '#fff';
+      const r = (b > 0.93 ? 1.4 : 0.7) * (w/600);
+      ctx.fillRect((x*0.5+0.5)*w, (y*0.5+0.5)*h, r, r);
+    }
+    ctx.globalAlpha = 1;
+  }
+  function dashedCircle(ctx, x, y, r, color, lw, dash){
+    ctx.save(); ctx.strokeStyle = color; ctx.lineWidth = lw; ctx.setLineDash(dash);
+    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI*2); ctx.stroke(); ctx.restore();
+  }
+
+  // =====================================================================
+  // 1. ÓRBITAS — geodésicas temporales en Schwarzschild (G = c = M = 1)
+  //    d²r/dτ² = -1/r² + L²/r³ - 3L²/r⁴ ,  dφ/dτ = L/r²
+  // =====================================================================
+  const orb = document.getElementById('orb'), octx = orb.getContext('2d');
+  const ORB_R = 30;
+  const COLORS = ['#ffb35c','#82c3ff','#c8a8ff','#7fe0b4','#ff8f8f','#ffe28a'];
+  const orbStars = makeStars(260, 7);
+  let parts = [], flashes = [], eaten = 0, escaped = 0, colorIdx = 0;
+  let running = !reduced, speedMul = 1, drag = null;
+
+  function addParticle(r, phi, vr, L){
+    parts.push({r, phi, vr, L, trail:[], color:COLORS[colorIdx++ % COLORS.length], dead:null, fade:1});
+    if (parts.length > 40) parts.shift();
+  }
+  function addFromXY(x, y, vx, vy){
+    const r = Math.hypot(x, y);
+    if (r <= 2.05) return;
+    const rx = x/r, ry = y/r;
+    addParticle(r, Math.atan2(y, x), vx*rx + vy*ry, r*(-vx*ry + vy*rx));
+  }
+  const accR = (r, L2) => -1/(r*r) + L2/(r*r*r) - 3*L2/(r*r*r*r);
+  function rk4(p, h){
+    const L2 = p.L*p.L, L = p.L;
+    const a1r = p.vr,              a1v = accR(p.r, L2),              a1p = L/(p.r*p.r);
+    const r2 = p.r + h/2*a1r,      v2 = p.vr + h/2*a1v;
+    const a2r = v2,                a2v = accR(r2, L2),               a2p = L/(r2*r2);
+    const r3 = p.r + h/2*a2r,      v3 = p.vr + h/2*a2v;
+    const a3r = v3,                a3v = accR(r3, L2),               a3p = L/(r3*r3);
+    const r4 = p.r + h*a3r,        v4 = p.vr + h*a3v;
+    const a4r = v4,                a4v = accR(r4, L2),               a4p = L/(r4*r4);
+    p.r   += h/6*(a1r + 2*a2r + 2*a3r + a4r);
+    p.vr  += h/6*(a1v + 2*a2v + 2*a3v + a4v);
+    p.phi += h/6*(a1p + 2*a2p + 2*a3p + a4p);
+  }
+  function physics(dt){
+    for (const p of parts){
+      if (p.dead){ p.fade -= 0.008; continue; }
+      let t = 0;
+      while (t < dt && !p.dead){
+        const h = Math.min(0.012*Math.pow(p.r, 1.5), 1, 0.04*p.r/(Math.abs(p.vr)+1e-9), dt - t);
+        rk4(p, h); t += h;
+        const x = p.r*Math.cos(p.phi), y = p.r*Math.sin(p.phi);
+        const last = p.trail[p.trail.length-1];
+        if (!last || Math.hypot(x-last[0], y-last[1]) > 0.12){
+          p.trail.push([x, y]);
+          if (p.trail.length > 1400) p.trail.shift();
+        }
+        if (p.r <= 2){
+          p.dead = 'eaten'; eaten++;
+          p.trail.push([2*Math.cos(p.phi), 2*Math.sin(p.phi)]);
+          flashes.push({x:2*Math.cos(p.phi), y:2*Math.sin(p.phi), t:0, c:p.color});
+        } else if (p.r > 140){ p.dead = 'escaped'; escaped++; }
+      }
+    }
+    parts = parts.filter(p => p.fade > 0);
+    for (const f of flashes) f.t += 0.03;
+    flashes = flashes.filter(f => f.t < 1);
+  }
+
+  const ORB_PRESETS = {
+    estable(){ const r = 18; addParticle(r, Math.random()*6.28, 0, r/Math.sqrt(r-3)); },
+    roseta(){ addParticle(24, Math.random()*6.28, 0, 4.2); },
+    isco(){ addParticle(6, Math.random()*6.28, -0.002, Math.sqrt(12)); },
+    honda(){ addParticle(28, Math.random()*6.28, -0.235, 4.02); },
+    caida(){ addParticle(26, Math.random()*6.28, 0, 0); }
+  };
+
+  function drawOrbits(){
+    const dpr = fit(orb), w = orb.width, h = orb.height, s = w/(2*ORB_R);
+    const X = x => w/2 + x*s, Y = y => h/2 - y*s;
+    octx.fillStyle = T.deep; octx.fillRect(0, 0, w, h);
+    drawStars(octx, orbStars, w, h, 0.8);
+    // brillo de disco tenue
+    const g = octx.createRadialGradient(w/2, h/2, 2*s, w/2, h/2, 11*s);
+    g.addColorStop(0, 'rgba(255,157,66,0.22)'); g.addColorStop(1, 'rgba(255,157,66,0)');
+    octx.fillStyle = g; octx.beginPath(); octx.arc(w/2, h/2, 11*s, 0, Math.PI*2); octx.fill();
+    dashedCircle(octx, w/2, h/2, 6*s, T.disk, 1.2*dpr, [5*dpr, 5*dpr]);
+    dashedCircle(octx, w/2, h/2, 3*s, T.light, 1.2*dpr, [3*dpr, 4*dpr]);
+    // trayectorias
+    octx.lineCap = 'round'; octx.lineJoin = 'round';
+    for (const p of parts){
+      const tr = p.trail, n = tr.length;
+      if (n < 2) continue;
+      const chunks = 10, per = Math.ceil(n/chunks);
+      octx.strokeStyle = p.color; octx.lineWidth = 1.5*dpr;
+      for (let c = 0; c < chunks; c++){
+        const a = c*per, b = Math.min(n-1, (c+1)*per);
+        if (b <= a) continue;
+        octx.globalAlpha = p.fade * (0.12 + 0.8*(c+1)/chunks);
+        octx.beginPath(); octx.moveTo(X(tr[a][0]), Y(tr[a][1]));
+        for (let i = a+1; i <= b; i++) octx.lineTo(X(tr[i][0]), Y(tr[i][1]));
+        octx.stroke();
+      }
+      if (!p.dead){
+        octx.globalAlpha = 1;
+        const x = X(p.r*Math.cos(p.phi)), y = Y(p.r*Math.sin(p.phi));
+        octx.fillStyle = p.color; octx.shadowColor = p.color; octx.shadowBlur = 10*dpr;
+        octx.beginPath(); octx.arc(x, y, 3.2*dpr, 0, Math.PI*2); octx.fill();
+        octx.shadowBlur = 0;
+      }
+    }
+    octx.globalAlpha = 1;
+    // horizonte
+    octx.fillStyle = '#000'; octx.beginPath(); octx.arc(w/2, h/2, 2*s, 0, Math.PI*2); octx.fill();
+    octx.strokeStyle = T.hot; octx.globalAlpha = 0.7; octx.lineWidth = 1*dpr; octx.stroke(); octx.globalAlpha = 1;
+    for (const f of flashes){
+      octx.globalAlpha = 1 - f.t; octx.strokeStyle = f.c; octx.lineWidth = 2*dpr;
+      octx.beginPath(); octx.arc(X(f.x), Y(f.y), (3 + 18*f.t)*dpr, 0, Math.PI*2); octx.stroke();
+    }
+    octx.globalAlpha = 1;
+    // flecha de lanzamiento
+    if (drag){
+      const x0 = X(drag.x0), y0 = Y(drag.y0), x1 = X(drag.x), y1 = Y(drag.y);
+      octx.strokeStyle = T.ink; octx.fillStyle = T.ink; octx.lineWidth = 1.5*dpr;
+      octx.beginPath(); octx.arc(x0, y0, 4*dpr, 0, Math.PI*2); octx.fill();
+      if (Math.hypot(x1-x0, y1-y0) > 4*dpr){
+        const ang = Math.atan2(y1-y0, x1-x0), hd = 9*dpr;
+        octx.beginPath(); octx.moveTo(x0, y0); octx.lineTo(x1, y1); octx.stroke();
+        octx.beginPath(); octx.moveTo(x1, y1);
+        octx.lineTo(x1 - hd*Math.cos(ang-0.4), y1 - hd*Math.sin(ang-0.4));
+        octx.lineTo(x1 - hd*Math.cos(ang+0.4), y1 - hd*Math.sin(ang+0.4)); octx.closePath(); octx.fill();
+      }
+    }
+  }
+  let statTick = 0;
+  function updateOrbStats(){
+    const alive = parts.filter(p => !p.dead).length;
+    document.getElementById('orbStats').textContent = `En órbita: ${alive} · Tragadas: ${eaten} · Escaparon: ${escaped}`;
+  }
+  function toWorld(e, c, R){
+    const r = c.getBoundingClientRect();
+    return [((e.clientX - r.left)/r.width*2 - 1)*R, -((e.clientY - r.top)/r.height*2 - 1)*R];
+  }
+  orb.addEventListener('pointerdown', e => {
+    const [x, y] = toWorld(e, orb, ORB_R);
+    drag = {x0:x, y0:y, x, y};
+    orb.setPointerCapture(e.pointerId);
+    if (!running) drawOrbits();
+  });
+  orb.addEventListener('pointermove', e => {
+    if (!drag) return;
+    [drag.x, drag.y] = toWorld(e, orb, ORB_R);
+    if (!running) drawOrbits();
+  });
+  orb.addEventListener('pointerup', () => {
+    if (!drag) return;
+    const dx = drag.x - drag.x0, dy = drag.y - drag.y0;
+    const k = Math.hypot(dx, dy) < 0.6 ? 0 : 0.03;
+    addFromXY(drag.x0, drag.y0, dx*k, dy*k);
+    drag = null; updateOrbStats();
+    if (!running) drawOrbits();
+  });
+  orb.addEventListener('pointercancel', () => { drag = null; });
+  document.querySelectorAll('[data-orb]').forEach(b => b.addEventListener('click', () => {
+    ORB_PRESETS[b.dataset.orb](); updateOrbStats(); if (!running) drawOrbits();
+  }));
+  const pauseBtn = document.getElementById('pause');
+  function setRunning(v){
+    running = v;
+    pauseBtn.textContent = v ? 'Pausar' : 'Reanudar';
+    pauseBtn.setAttribute('aria-pressed', String(!v));
+  }
+  pauseBtn.addEventListener('click', () => setRunning(!running));
+  document.getElementById('clear').addEventListener('click', () => {
+    parts = []; flashes = []; eaten = 0; escaped = 0; updateOrbStats(); drawOrbits();
+  });
+  const speedIn = document.getElementById('speed');
+  speedIn.addEventListener('input', () => {
+    speedMul = Math.pow(2, +speedIn.value);
+    document.getElementById('speedOut').textContent = nf2.format(speedMul) + '×';
+  });
+
+  function updateOrbRead(){
+    const Mm = massSun*MSUN_M, Ms = massSun*MSUN_SEC;
+    const tIsco = 2*Math.PI*Math.pow(6, 1.5)*Ms;
+    document.getElementById('orbRead').innerHTML = `
+      <dt>Horizonte</dt><dd>${fmtDist(2*Mm)}</dd>
+      <dt>Esfera de fotones</dt><dd>${fmtDist(3*Mm)}</dd>
+      <dt>ISCO</dt><dd>${fmtDist(6*Mm)}</dd>
+      <dt>Una vuelta en la ISCO</dt><dd>${fmtTime(tIsco)}</dd>
+      <dt>Ancho del lienzo</dt><dd>${fmtDist(2*ORB_R*Mm)}</dd>`;
+  }
+
+  // =====================================================================
+  // 2. LUZ — d²u/dφ² + u = 3u²  ⇔  a = -3h² r⃗ / r⁵ en coordenadas cartesianas
+  // =====================================================================
+  const lit = document.getElementById('lit'), lctx = lit.getContext('2d');
+  const LR = 16;
+  const litStars = makeStars(220, 31);
+  let rays = [], userRay = null, litTime = 0;
+
+  function traceRay(b){
+    let x = -LR - 1, y = b, vx = 1, vy = 0;
+    const h2 = b*b;
+    const ax = (px, py) => { const r2 = px*px + py*py; return -3*h2/(r2*r2*Math.sqrt(r2)); };
+    const pts = [[x, y]], cum = [0];
+    let captured = false, phiPrev = Math.atan2(y, x), swept = 0;
+    for (let i = 0; i < 60000; i++){
+      const r = Math.hypot(x, y);
+      if (r <= 2){ captured = true; break; }
+      if (x > LR + 2 || Math.abs(y) > LR + 2 || (x < -LR - 2 && vx < 0)) break;
+      const ds = Math.min(0.15, Math.max(0.002, 0.02*(r - 1.9)));
+      const f1 = ax(x, y);
+      const k1 = [vx, vy, f1*x, f1*y];
+      let tx = x + ds/2*k1[0], ty = y + ds/2*k1[1];
+      const f2 = ax(tx, ty); const k2 = [vx + ds/2*k1[2], vy + ds/2*k1[3], f2*tx, f2*ty];
+      tx = x + ds/2*k2[0]; ty = y + ds/2*k2[1];
+      const f3 = ax(tx, ty); const k3 = [vx + ds/2*k2[2], vy + ds/2*k2[3], f3*tx, f3*ty];
+      tx = x + ds*k3[0]; ty = y + ds*k3[1];
+      const f4 = ax(tx, ty); const k4 = [vx + ds*k3[2], vy + ds*k3[3], f4*tx, f4*ty];
+      x  += ds/6*(k1[0] + 2*k2[0] + 2*k3[0] + k4[0]);
+      y  += ds/6*(k1[1] + 2*k2[1] + 2*k3[1] + k4[1]);
+      vx += ds/6*(k1[2] + 2*k2[2] + 2*k3[2] + k4[2]);
+      vy += ds/6*(k1[3] + 2*k2[3] + 2*k3[3] + k4[3]);
+      const ph = Math.atan2(y, x);
+      let d = ph - phiPrev;
+      if (d > Math.PI) d -= 2*Math.PI; else if (d < -Math.PI) d += 2*Math.PI;
+      swept += d; phiPrev = ph;
+      const last = pts[pts.length-1], seg = Math.hypot(x - last[0], y - last[1]);
+      if (seg > 0.06){ pts.push([x, y]); cum.push(cum[cum.length-1] + seg); }
+    }
+    const last = pts[pts.length-1];
+    if (last[0] !== x || last[1] !== y){ pts.push([x, y]); cum.push(cum[cum.length-1] + Math.hypot(x-last[0], y-last[1])); }
+    return {b, pts, cum, len:cum[cum.length-1], captured, swept:Math.abs(swept), off:Math.random()};
+  }
+  function buildRays(){
+    const n = +document.getElementById('nrays').value, bmax = +document.getElementById('beam').value;
+    document.getElementById('nraysOut').textContent = n;
+    document.getElementById('beamOut').textContent = '±' + nf3.format(bmax) + ' M';
+    rays = [];
+    for (let i = 0; i < n; i++){
+      const b = n === 1 ? 0 : -bmax + 2*bmax*i/(n-1);
+      rays.push(traceRay(b === 0 ? 1e-6 : b));
+    }
+  }
+  function setUserRay(b){
+    userRay = traceRay(Math.abs(b) < 1e-6 ? 1e-6 : b);
+    userRay.off = 0;
+    const turns = userRay.swept/(2*Math.PI);
+    const defl = (userRay.swept - Math.PI)*180/Math.PI;
+    document.getElementById('rayRead').innerHTML = `
+      <dt>Distancia de paso (b)</dt><dd>${nf3.format(Math.abs(b))} M</dd>
+      <dt>Resultado</dt><dd>${userRay.captured ? 'Cae al agujero' : 'Escapa'}</dd>
+      <dt>${userRay.captured ? 'Gira antes de caer' : 'Se desvía'}</dt><dd>${userRay.captured ? nf3.format(userRay.swept*180/Math.PI) : nf3.format(Math.max(0, defl))}°</dd>
+      <dt>Vueltas al agujero</dt><dd>${nf2.format(turns)}</dd>`;
+  }
+  function posAt(ray, s){
+    const c = ray.cum; let lo = 0, hi = c.length - 1;
+    while (hi - lo > 1){ const m = (lo + hi) >> 1; if (c[m] < s) lo = m; else hi = m; }
+    const t = (s - c[lo])/Math.max(1e-9, c[hi] - c[lo]);
+    return [ray.pts[lo][0] + (ray.pts[hi][0] - ray.pts[lo][0])*t, ray.pts[lo][1] + (ray.pts[hi][1] - ray.pts[lo][1])*t];
+  }
+  function strokeRay(ctx, ray, X, Y){
+    ctx.beginPath(); ctx.moveTo(X(ray.pts[0][0]), Y(ray.pts[0][1]));
+    for (let i = 1; i < ray.pts.length; i++) ctx.lineTo(X(ray.pts[i][0]), Y(ray.pts[i][1]));
+    ctx.stroke();
+  }
+  function drawLight(){
+    const dpr = fit(lit), w = lit.width, h = lit.height, s = w/(2*LR);
+    const X = x => w/2 + x*s, Y = y => h/2 - y*s;
+    lctx.fillStyle = T.deep; lctx.fillRect(0, 0, w, h);
+    drawStars(lctx, litStars, w, h, 0.55);
+    // líneas del parámetro crítico
+    lctx.save(); lctx.setLineDash([2*dpr, 5*dpr]); lctx.strokeStyle = T.hot; lctx.globalAlpha = 0.6; lctx.lineWidth = 1*dpr;
+    for (const sg of [1, -1]){ lctx.beginPath(); lctx.moveTo(0, Y(sg*RCRIT)); lctx.lineTo(X(-6), Y(sg*RCRIT)); lctx.stroke(); }
+    lctx.restore();
+    lctx.fillStyle = T.hot; lctx.font = `${11*dpr}px ${css('--f-mono')}`; lctx.globalAlpha = 0.85;
+    lctx.fillText('b crítico', 8*dpr, Y(RCRIT) - 6*dpr); lctx.globalAlpha = 1;
+    dashedCircle(lctx, w/2, h/2, 3*s, T.light, 1*dpr, [3*dpr, 4*dpr]);
+    lctx.lineJoin = 'round'; lctx.lineCap = 'round';
+    for (const r of rays){
+      lctx.strokeStyle = r.captured ? T.disk : T.light;
+      lctx.globalAlpha = r.captured ? 0.55 : 0.42; lctx.lineWidth = 1.2*dpr;
+      strokeRay(lctx, r, X, Y);
+    }
+    lctx.globalAlpha = 1;
+    if (userRay){ lctx.strokeStyle = T.hot; lctx.lineWidth = 2.2*dpr; strokeRay(lctx, userRay, X, Y); }
+    lctx.fillStyle = '#000'; lctx.beginPath(); lctx.arc(w/2, h/2, 2*s, 0, Math.PI*2); lctx.fill();
+    lctx.strokeStyle = T.hot; lctx.globalAlpha = 0.6; lctx.lineWidth = 1*dpr; lctx.stroke(); lctx.globalAlpha = 1;
+    // fotones en movimiento
+    const all = userRay ? rays.concat([userRay]) : rays;
+    for (const r of all){
+      const period = r.len + 8, sPos = ((litTime*0.12 + r.off*period) % period);
+      if (sPos > r.len) continue;
+      const [px, py] = posAt(r, sPos);
+      const col = r === userRay ? T.hot : (r.captured ? T.disk : '#ffffff');
+      lctx.fillStyle = col; lctx.shadowColor = col; lctx.shadowBlur = 8*dpr;
+      lctx.beginPath(); lctx.arc(X(px), Y(py), (r === userRay ? 3.2 : 2.2)*dpr, 0, Math.PI*2); lctx.fill();
+    }
+    lctx.shadowBlur = 0;
+  }
+  lit.addEventListener('pointerdown', e => {
+    const [, y] = toWorld(e, lit, LR);
+    setUserRay(y); if (reduced) drawLight();
+  });
+  ['nrays', 'beam'].forEach(id => document.getElementById(id).addEventListener('input', () => { buildRays(); if (reduced) drawLight(); }));
+  document.querySelectorAll('[data-b]').forEach(b => b.addEventListener('click', () => { setUserRay(+b.dataset.b); if (reduced) drawLight(); }));
+
+  // =====================================================================
+  // 3. DESCENSO — observador estático a una distancia r
+  // =====================================================================
+  const distIn = document.getElementById('dist');
+  const visor = document.getElementById('visor'), vctx = visor.getContext('2d');
+  const bodyC = document.getElementById('body'), bctx = bodyC.getContext('2d');
+  const skyStars = (() => {
+    let s = 99; const rnd = () => (s = (s*16807) % 2147483647)/2147483647;
+    return Array.from({length:700}, () => [Math.acos(1 - 2*rnd()), rnd()*Math.PI*2, rnd()]);
+  })();
+  const qFromSlider = v => 1 + 1e-4 + 29*Math.pow(v/1000, 3);
+
+  function wlToRGB(nm){
+    let r = 0, g = 0, b = 0;
+    if (nm >= 380 && nm < 440){ r = -(nm-440)/60; b = 1; }
+    else if (nm < 490){ g = (nm-440)/50; b = 1; }
+    else if (nm < 510){ g = 1; b = -(nm-510)/20; }
+    else if (nm < 580){ r = (nm-510)/70; g = 1; }
+    else if (nm < 645){ r = 1; g = -(nm-645)/65; }
+    else if (nm <= 780){ r = 1; }
+    let f = 1;
+    if (nm < 420) f = 0.3 + 0.7*(nm-380)/40; else if (nm > 700) f = 0.3 + 0.7*(780-nm)/80;
+    if (nm < 380 || nm > 780) return null;
+    const c = v => Math.round(255*Math.pow(v*f, 0.8));
+    return `rgb(${c(r)},${c(g)},${c(b)})`;
+  }
+  function wlName(nm){
+    if (nm < 450) return 'violeta'; if (nm < 495) return 'azul'; if (nm < 570) return 'verde';
+    if (nm < 590) return 'amarilla'; if (nm < 620) return 'naranja'; if (nm <= 780) return 'roja';
+    if (nm < 1e6) return 'infrarroja'; if (nm < 1e9) return 'microondas'; return 'ondas de radio';
+  }
+  function tideLevel(g){
+    if (g < 0.01) return [0, 'No notas nada'];
+    if (g < 1) return [1, 'Leve'];
+    if (g < 10) return [2, 'Incómodo'];
+    if (g < 100) return [3, 'Peligroso'];
+    if (g < 1e4) return [4, 'Letal'];
+    return [5, 'Espaguetización'];
+  }
+
+  let J = {};
+  function computeJourney(){
+    const q = qFromSlider(+distIn.value);
+    const Mm = massSun*MSUN_M, Ms = massSun*MSUN_SEC, rs = 2*Mm, rm = q*rs;
+    const gamma = 1/Math.sqrt(1 - 1/q);
+    const GM = Mm*C*C;
+    const tide = 2*GM*2/Math.pow(rm, 3)/G0;          // diferencia cabeza-pies (2 m), en g
+    const R = 2*q;                                    // distancia en unidades de M
+    const etaH = Math.acos(Math.max(-1, Math.min(1, 4/R - 1)));
+    const k = Math.sqrt(R*R*R/8);
+    const tauH = k*(etaH + Math.sin(etaH))*Ms;
+    const tauC = (k*Math.PI - k*(etaH + Math.sin(etaH)))*Ms;
+    const sinA = Math.min(1, RCRIT/R*Math.sqrt(1 - 2/R));
+    const alpha = R >= 3 ? Math.asin(sinA) : Math.PI - Math.asin(sinA);
+    const r10 = Math.cbrt(2*GM*2/(10*G0));
+    J = {q, rm, rs, gamma, tide, tauH, tauC, alpha, r10};
+  }
+  function updateJourney(){
+    computeJourney();
+    const {q, rm, rs, gamma, tide, tauH, tauC, alpha, r10} = J;
+    document.getElementById('distOut').textContent = `${nf3.format(q)} rs · ${fmtDist(rm)}`;
+    const lam = 530*gamma, rgb = wlToRGB(lam);
+    const [lv, lt] = tideLevel(tide);
+    const pctSky = (1 - Math.cos(alpha))/2*100;
+    document.getElementById('cards').innerHTML = `
+      <div class="card"><span class="k">Tu reloj</span><span class="v">1 h = ${fmtTime(3600*gamma)}</span><span class="s">Por cada hora tuya, lejos de aquí pasan ${fmtTime(3600*gamma)}. Tu tiempo va ${num(gamma)} veces más lento.</span></div>
+      <div class="card"><span class="k">Tu luz verde llega</span><span class="v"><span class="swatch" style="background:${rgb || 'transparent'}"></span>${wlName(lam)}</span><span class="s">Un láser de 530 nm se recibe lejos a ${lam < 1e6 ? num(lam) + ' nm' : num(lam/1e6) + ' mm'}${rgb ? '' : ', invisible para el ojo'}.</span></div>
+      <div class="card"><span class="k">Marea en tu cuerpo</span><span class="v">${num(tide)} g</span><span class="lvl" data-l="${lv}">${lt}</span><span class="s">Diferencia de gravedad entre tu cabeza y tus pies.</span></div>
+      <div class="card"><span class="k">Si apagas los cohetes</span><span class="v">${fmtTime(tauH)}</span><span class="s">hasta cruzar el horizonte, y ${fmtTime(tauC)} más hasta el centro (en tu reloj).</span></div>
+      <div class="card"><span class="k">Velocidad de escape</span><span class="v">${num(100/Math.sqrt(q))} %</span><span class="s">de la velocidad de la luz para salir de aquí.</span></div>
+      <div class="card"><span class="k">El negro tapa</span><span class="v">${num(pctSky)} %</span><span class="s">de tu cielo. El resto del universo se comprime en lo que queda.</span></div>`;
+    document.getElementById('visorCap').textContent = `El centro es la dirección del agujero y el borde, lo que queda a tu espalda. La sombra tapa ${num(pctSky)} % del cielo, y la luz de las estrellas te llega ${num(gamma)} veces más energética.`;
+    const r10txt = r10 < rs
+      ? `Con ${massName} las mareas son suaves en el horizonte: lo cruzarías sin notar nada. El estiramiento fuerte (10 g) empieza ya adentro, a ${fmtDist(r10)} del centro.`
+      : `Con ${massName} empezarías a estirarte con fuerza (10 g) a ${fmtDist(r10)} del centro, unas ${num(r10/rs)} veces el radio del horizonte. Morirías espaguetizada antes de llegar.`;
+    document.getElementById('tideNote').innerHTML = `<b>Espaguetización.</b> ${r10txt}`;
+    drawVisor(); drawBody();
+  }
+  function drawVisor(){
+    const dpr = fit(visor), w = visor.width, h = visor.height, cx = w/2, cy = h/2, Rv = 0.46*w;
+    const {alpha, gamma} = J;
+    vctx.fillStyle = T.deep; vctx.fillRect(0, 0, w, h);
+    vctx.save(); vctx.beginPath(); vctx.arc(cx, cy, Rv, 0, Math.PI*2); vctx.clip();
+    vctx.fillStyle = '#05060a'; vctx.fillRect(0, 0, w, h);
+    const t = Math.min(1, Math.log10(gamma)/1.5);
+    const sr = Math.round(255 - 120*t), sg = Math.round(255 - 60*t);
+    for (const [th, ps, b] of skyStars){
+      const ap = alpha + (Math.PI - alpha)*th/Math.PI;           // todo el cielo se comprime fuera de la sombra
+      const rr = ap/Math.PI*Rv;
+      vctx.globalAlpha = Math.min(1, (0.3 + 0.7*b) * (0.6 + 0.4*t));
+      vctx.fillStyle = `rgb(${sr},${sg},255)`;
+      const sz = (b > 0.9 ? 1.6 : 0.9)*dpr;
+      vctx.fillRect(cx + rr*Math.cos(ps), cy + rr*Math.sin(ps), sz, sz);
+    }
+    vctx.globalAlpha = 1;
+    const rShadow = alpha/Math.PI*Rv;
+    const g = vctx.createRadialGradient(cx, cy, rShadow*0.98, cx, cy, rShadow + 10*dpr);
+    g.addColorStop(0, 'rgba(255,213,138,0.9)'); g.addColorStop(1, 'rgba(255,157,66,0)');
+    vctx.fillStyle = g; vctx.beginPath(); vctx.arc(cx, cy, rShadow + 10*dpr, 0, Math.PI*2); vctx.fill();
+    vctx.fillStyle = '#000'; vctx.beginPath(); vctx.arc(cx, cy, rShadow, 0, Math.PI*2); vctx.fill();
+    vctx.restore();
+    vctx.strokeStyle = T.line; vctx.lineWidth = 1*dpr;
+    vctx.beginPath(); vctx.arc(cx, cy, Rv, 0, Math.PI*2); vctx.stroke();
+  }
+  function drawBody(){
+    const dpr = fit(bodyC), w = bodyC.width, h = bodyC.height;
+    const {tide} = J;
+    const stretch = 1 + Math.min(Math.log10(1 + tide), 6)*0.33;
+    const sx = 1/Math.sqrt(stretch);
+    bctx.fillStyle = T.deep; bctx.fillRect(0, 0, w, h);
+    // flecha hacia el agujero
+    bctx.strokeStyle = T.muted; bctx.fillStyle = T.muted; bctx.lineWidth = 1*dpr;
+    bctx.font = `${11*dpr}px ${css('--f-mono')}`; bctx.textAlign = 'center';
+    bctx.fillText('hacia el agujero', w/2, h - 10*dpr);
+    bctx.beginPath(); bctx.moveTo(w*0.86, h*0.2); bctx.lineTo(w*0.86, h*0.82); bctx.stroke();
+    bctx.beginPath(); bctx.moveTo(w*0.86, h*0.84); bctx.lineTo(w*0.86 - 5*dpr, h*0.84 - 9*dpr); bctx.lineTo(w*0.86 + 5*dpr, h*0.84 - 9*dpr); bctx.closePath(); bctx.fill();
+    // figura: unidades donde la altura en reposo = 1
+    const base = h*0.42, cx = w/2, cy = h*0.46;
+    const U = (x, y) => [cx + x*base*sx, cy + y*base*stretch];
+    const hurt = Math.min(1, Math.log10(1 + tide)/4);
+    const suit = `rgb(${Math.round(236 - 10*hurt)},${Math.round(235 - 120*hurt)},${Math.round(230 - 120*hurt)})`;
+    bctx.save();
+    bctx.lineCap = 'round'; bctx.lineJoin = 'round';
+    bctx.strokeStyle = suit; bctx.fillStyle = suit;
+    const lw = 0.075*base*sx;
+    // piernas
+    bctx.lineWidth = lw*1.15;
+    for (const sgn of [-1, 1]){ const a = U(sgn*0.06, 0.12), b = U(sgn*0.11, 0.48); bctx.beginPath(); bctx.moveTo(...a); bctx.lineTo(...b); bctx.stroke(); }
+    // brazos
+    bctx.lineWidth = lw*0.9;
+    for (const sgn of [-1, 1]){ const a = U(sgn*0.12, -0.22), b = U(sgn*0.22, 0.08); bctx.beginPath(); bctx.moveTo(...a); bctx.lineTo(...b); bctx.stroke(); }
+    // torso
+    const [tx, ty] = U(-0.13, -0.27), [tx2, ty2] = U(0.13, 0.16);
+    bctx.beginPath(); bctx.roundRect(tx, ty, tx2 - tx, ty2 - ty, 0.06*base*sx); bctx.fill();
+    // casco
+    const [hx, hy] = U(0, -0.39);
+    bctx.beginPath(); bctx.ellipse(hx, hy, 0.11*base*sx, 0.11*base*stretch, 0, 0, Math.PI*2); bctx.fill();
+    bctx.fillStyle = '#1b2236';
+    bctx.beginPath(); bctx.ellipse(hx, hy + 0.01*base*stretch, 0.075*base*sx, 0.06*base*stretch, 0, 0, Math.PI*2); bctx.fill();
+    bctx.fillStyle = T.hot; bctx.globalAlpha = 0.5;
+    bctx.beginPath(); bctx.ellipse(hx - 0.03*base*sx, hy - 0.01*base*stretch, 0.02*base*sx, 0.015*base*stretch, 0, 0, Math.PI*2); bctx.fill();
+    bctx.restore();
+    bctx.textAlign = 'left'; bctx.fillStyle = T.ink; bctx.font = `${12*dpr}px ${css('--f-mono')}`;
+    bctx.fillText(`estiramiento ×${nf2.format(stretch)}`, 10*dpr, 20*dpr);
+  }
+  distIn.addEventListener('input', updateJourney);
+  let fallAnim = null;
+  document.getElementById('fall').addEventListener('click', () => {
+    if (fallAnim) cancelAnimationFrame(fallAnim);
+    const start = +distIn.value || 1000, t0 = performance.now(), dur = 6000;
+    const tick = now => {
+      const k = Math.min(1, (now - t0)/dur);
+      distIn.value = String(Math.round(start*(1 - k*k)));
+      updateJourney();
+      fallAnim = k < 1 ? requestAnimationFrame(tick) : null;
+    };
+    if (+distIn.value < 5) distIn.value = '1000';
+    fallAnim = requestAnimationFrame(tick);
+  });
+
+  // ---------- Masa ----------
+  const massIn = document.getElementById('mass');
+  function setMass(m, name, note, presetKey){
+    massSun = m; massName = name;
+    document.getElementById('massOut').textContent = fmtMass(m);
+    document.getElementById('massNote').textContent = note;
+    document.getElementById('jName').textContent = name;
+    document.querySelectorAll('[data-preset]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.preset === presetKey)));
+    updateOrbRead(); updateJourney();
+  }
+  document.querySelectorAll('[data-preset]').forEach(b => b.addEventListener('click', () => {
+    const p = PRESETS[b.dataset.preset];
+    massIn.value = String(Math.log10(p.m));
+    setMass(p.m, p.name, p.note, b.dataset.preset);
+  }));
+  massIn.addEventListener('input', () => {
+    const m = Math.pow(10, +massIn.value);
+    setMass(m, 'este agujero negro', `Masa personalizada: ${fmtMass(m)}. Un agujero estelar tiene entre 3 y 100 masas solares; los supermasivos, millones o miles de millones.`, null);
+    document.getElementById('jName').textContent = 'un agujero de ' + fmtMass(m);
+  });
+
+  // ---------- Bucle ----------
+  let visOrb = true, visLit = true;
+  if ('IntersectionObserver' in window){
+    new IntersectionObserver(es => es.forEach(e => {
+      if (e.target === orb) visOrb = e.isIntersecting; else visLit = e.isIntersecting;
+    })).observe(orb);
+    new IntersectionObserver(es => es.forEach(e => { visLit = e.isIntersecting; })).observe(lit);
+  }
+  let lastT = performance.now();
+  function loop(now){
+    const dtMs = Math.min(50, now - lastT); lastT = now;
+    if (running){
+      physics(1.5*speedMul*dtMs/16.67);
+      if (++statTick % 10 === 0) updateOrbStats();
+      if (visOrb) drawOrbits();
+    } else if (drag && visOrb) drawOrbits();
+    if (!reduced && running){ litTime += dtMs/16.67; if (visLit) drawLight(); }
+    requestAnimationFrame(loop);
+  }
+  if ('ResizeObserver' in window){
+    new ResizeObserver(() => { drawOrbits(); drawLight(); drawVisor(); drawBody(); }).observe(document.querySelector('.wrap'));
+  }
+
+  // ---------- Inicio: estado de trabajo con trayectorias ya dibujadas ----------
+  ORB_PRESETS.estable(); ORB_PRESETS.roseta(); ORB_PRESETS.honda();
+  for (let i = 0; i < 260; i++) physics(1.5);
+  buildRays(); setUserRay(5.25);
+  litTime = 40;
+  setMass(PRESETS.sgr.m, PRESETS.sgr.name, PRESETS.sgr.note, 'sgr');
+  speedIn.dispatchEvent(new Event('input'));
+  setRunning(running);
+  updateOrbStats(); drawOrbits(); drawLight();
+  requestAnimationFrame(loop);
+})();
+</script>
