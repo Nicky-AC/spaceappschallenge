@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sentinels of Silence: a map of the machines that stayed behind</title>
+<meta name="description" content="An interactive map for kids aged 8 to 11 about the machines NASA left on the Moon, on Mars and beyond, and the science they made possible.">
+<meta name="generator" content="Code and text drafted with AI assistance (Claude, Anthropic) and reviewed by the author. Facts from NASA sources listed on each card.">
+<style>
+  :root {
+    --bg: #0a0d16;
+    --panel: #141a2b;
+    --panel-2: #1c2438;
+    --line: #2b3550;
+    --text: #f1f4fb;
+    --muted: #aab4cc;
+    --pin: #ffb84d;
+    --pin-ink: #2a1a00;
+    --found: #5fd6bd;
+    --found-ink: #00241d;
+    --link: #9cc7ff;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 17px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  a { color: var(--link); }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  :focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 16px; }
+
+  header.top { padding: 28px 0 12px; }
+  .eyebrow {
+    font-size: 13px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--pin); margin: 0 0 6px;
+  }
+  h1 { font-size: clamp(30px, 5vw, 50px); line-height: 1.05; margin: 0 0 10px; letter-spacing: -.02em; }
+  .lede { max-width: 62ch; color: var(--muted); margin: 0; font-size: 18px; }
+  .lede b { color: var(--text); }
+
+  .bar {
+    display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
+    justify-content: space-between; margin: 20px 0 12px;
+  }
+  .tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+  .tab {
+    background: var(--panel); border: 2px solid var(--line); border-radius: 999px;
+    padding: 9px 18px; font-weight: 650; min-height: 44px;
+  }
+  .tab[aria-selected="true"] { background: var(--pin); border-color: var(--pin); color: var(--pin-ink); }
+  .tab .n { opacity: .75; font-weight: 500; margin-left: 4px; }
+
+  .progress { display: flex; align-items: center; gap: 10px; font-size: 15px; color: var(--muted); }
+  .progress b { color: var(--found); font-size: 17px; }
+  .meter { width: 130px; height: 10px; background: var(--panel-2); border-radius: 99px; overflow: hidden; }
+  .meter i { display: block; height: 100%; width: 0; background: var(--found); transition: width .4s; }
+
+  .layout { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(320px, 1fr); gap: 18px; align-items: start; }
+  @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+
+  .mapcard { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .viewport { overflow: auto; cursor: grab; background: #05070c; touch-action: pan-x pan-y; }
+  .viewport.drag { cursor: grabbing; }
+  .stage { position: relative; width: 100%; aspect-ratio: 2 / 1; overflow: hidden; }
+  .tiles { position: absolute; inset: 0; display: grid; }
+  .tiles img { width: 100%; height: 100%; display: block; user-select: none; -webkit-user-drag: none; }
+  .stage svg.sky { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+  .pin {
+    position: absolute; width: 30px; height: 30px; margin: -15px 0 0 -15px;
+    border-radius: 50%; border: 3px solid #fff; background: var(--pin); color: var(--pin-ink);
+    font-size: 14px; font-weight: 800; line-height: 1; padding: 0;
+    display: grid; place-items: center;
+    box-shadow: 0 0 0 0 rgba(255,184,77,.7), 0 2px 8px rgba(0,0,0,.6);
+    animation: pulse 2.2s infinite;
+  }
+  .pin.found { background: var(--found); color: var(--found-ink); animation: none; }
+  .pin.sel { transform: scale(1.25); z-index: 3; box-shadow: 0 0 0 6px rgba(255,255,255,.35), 0 2px 8px rgba(0,0,0,.6); animation: none; }
+  .pin .lab {
+    position: absolute; left: 50%; top: 100%; transform: translate(-50%, 6px);
+    background: rgba(8,10,18,.88); color: #fff; font-size: 12.5px; font-weight: 600;
+    padding: 2px 8px; border-radius: 6px; white-space: nowrap; pointer-events: none;
+    opacity: 0; transition: opacity .15s;
+  }
+  .pin:hover .lab, .pin:focus-visible .lab, .pin.sel .lab, .stage.labels .pin .lab { opacity: 1; }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255,184,77,.7), 0 2px 8px rgba(0,0,0,.6); }
+    70% { box-shadow: 0 0 0 14px rgba(255,184,77,0), 0 2px 8px rgba(0,0,0,.6); }
+    100% { box-shadow: 0 0 0 0 rgba(255,184,77,0), 0 2px 8px rgba(0,0,0,.6); }
+  }
+  @media (prefers-reduced-motion: reduce) { .pin { animation: none; } html { scroll-behavior: auto; } .meter i { transition: none; } }
+
+  .maptools {
+    display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between;
+    padding: 10px 12px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted);
+  }
+  .zoom { display: flex; gap: 6px; align-items: center; }
+  .zoom button {
+    width: 44px; height: 44px; border-radius: 10px; background: var(--panel-2);
+    border: 1px solid var(--line); font-size: 22px; font-weight: 700;
+  }
+  .zoom button:disabled { opacity: .35; cursor: default; }
+
+  .list { margin: 14px 0 0; }
+  .list h2 { font-size: 15px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 0; }
+  .chip {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 999px;
+    padding: 8px 14px; font-size: 15px; min-height: 40px;
+  }
+  .chip.found { border-color: var(--found); }
+  .chip.found::before { content: "\2713\00a0"; color: var(--found); font-weight: 800; }
+  .chip[aria-current="true"] { background: var(--panel-2); border-color: #fff; }
+
+  .panel {
+    background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 20px; scroll-margin-top: 12px;
+  }
+  .panel .hint { color: var(--muted); }
+  .panel .hint .big { font-size: 46px; line-height: 1; margin: 0 0 10px; }
+  .badge {
+    display: inline-block; font-size: 12.5px; letter-spacing: .08em; text-transform: uppercase;
+    background: var(--panel-2); border: 1px solid var(--line); padding: 3px 10px; border-radius: 99px; color: var(--muted);
+    margin: 0 6px 6px 0;
+  }
+  .panel h2 { font-size: 28px; line-height: 1.12; margin: 6px 0 4px; letter-spacing: -.01em; }
+  .tagline { font-size: 19px; color: var(--pin); margin: 0 0 14px; font-weight: 600; }
+  figure { margin: 0 0 14px; }
+  figure img { width: 100%; max-height: 300px; object-fit: cover; border-radius: 10px; display: block; background: #05070c; }
+  figcaption { font-size: 12.5px; color: var(--muted); margin-top: 5px; }
+  .panel h3 { font-size: 14px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 20px 0 6px; }
+  .panel p { margin: 0 0 10px; }
+  .panel ul { margin: 0; padding-left: 22px; }
+  .panel li { margin-bottom: 6px; }
+  .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin: 0 0 4px; }
+  .fact { background: var(--panel-2); border-radius: 10px; padding: 9px 12px; }
+  .fact small { display: block; color: var(--muted); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+  .fact span { font-weight: 700; }
+  .life .row { display: grid; grid-template-columns: 74px 1fr; gap: 8px; align-items: center; margin-bottom: 6px; font-size: 15px; }
+  .life .track { background: var(--panel-2); border-radius: 99px; height: 16px; position: relative; }
+  .life .fill { height: 100%; border-radius: 99px; min-width: 6px; }
+  .life .plan .fill { background: #7f8bb0; }
+  .life .real .fill { background: var(--found); }
+  .life .val { color: var(--muted); font-size: 14px; margin: -2px 0 8px 82px; }
+  .life .wow { font-weight: 700; color: var(--found); margin: 6px 0 0; }
+  .sources { font-size: 14px; }
+  .sources li { word-break: break-word; }
+  .nav { display: flex; gap: 10px; margin-top: 20px; }
+  .nav button {
+    flex: 1; min-height: 46px; border-radius: 10px; background: var(--panel-2);
+    border: 1px solid var(--line); font-weight: 650;
+  }
+  .done {
+    margin: 16px 0 0; padding: 14px 16px; border-radius: 12px; border: 2px solid var(--found);
+    background: rgba(95,214,189,.1); font-weight: 600;
+  }
+  footer { color: var(--muted); font-size: 13.5px; padding: 28px 0 40px; }
+  footer p { margin: 0 0 8px; max-width: 90ch; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <p class="eyebrow">Abandoned but not forgotten</p>
+    <h1>Sentinels of Silence</h1>
+    <p class="lede">Far away, on the Moon, on Mars and out among the stars, there are machines that finished their jobs and <b>stayed behind</b>. They are quiet now, but each one has a story. <b>Tap a glowing dot</b> to find it.</p>
+  </header>
+
+  <div class="bar">
+    <div class="tabs" role="tablist" aria-label="Choose a place" id="tabs"></div>
+    <div class="progress" aria-live="polite">
+      <span>Found <b id="count">0</b> of <span id="total">0</span></span>
+      <span class="meter" aria-hidden="true"><i id="meter"></i></span>
+    </div>
+  </div>
+
+  <div class="layout">
+    <div>
+      <section class="mapcard" aria-label="Map">
+        <div class="viewport" id="viewport">
+          <div class="stage" id="stage"></div>
+        </div>
+        <div class="maptools">
+          <span id="credit"></span>
+          <span class="zoom">
+            <button type="button" id="zout" aria-label="Zoom out">&minus;</button>
+            <button type="button" id="zin" aria-label="Zoom in">+</button>
+          </span>
+        </div>
+      </section>
+      <nav class="list" aria-label="All the machines in this place">
+        <h2 id="listtitle">Machines here</h2>
+        <ul class="chips" id="chips"></ul>
+      </nav>
+    </div>
+
+    <article class="panel" id="panel" tabindex="-1" aria-live="polite"></article>
+  </div>
+
+  <footer>
+    <p><b>Where the facts come from.</b> Every card lists the NASA pages its facts were taken from. Base maps: Moon, Lunar Reconnaissance Orbiter WAC global mosaic (NASA/GSFC/Arizona State University); Mars, Viking MDIM 2.1 colour mosaic (NASA/JPL/USGS), both served by NASA Solar System Treks. The "Beyond" picture is a drawing and is not to scale.</p>
+    <p><b>About this page.</b> Made by team Centinela del Silencio for the 2026 NASA Space Apps Challenge, challenge "Abandoned but not Forgotten". The code and the first drafts of the texts were written with AI assistance (Claude, by Anthropic) and checked by the author against the NASA sources. This page is not endorsed by NASA.</p>
+  </footer>
+</div>
+
+<script src="data/stories.js"></script>
+<script>
+(function () {
+  'use strict';
+  var TREK = 'https://trek.nasa.gov/tiles/';
+  var WORLDS = {
+    moon: {
+      label: 'The Moon',
+      tiles: TREK + 'Moon/EQ/LRO_WAC_Mosaic_Global_303ppd_v02/1.0.0/default/default028mm/',
+      credit: 'Map: NASA/GSFC/Arizona State University (LRO), via NASA Moon Trek',
+      bg: '#55565a'
+    },
+    mars: {
+      label: 'Mars',
+      tiles: TREK + 'Mars/EQ/Mars_Viking_MDIM21_ClrMosaic_global_232m/1.0.0/default/default028mm/',
+      credit: 'Map: NASA/JPL/USGS (Viking), via NASA Mars Trek',
+      bg: '#8a4b2c'
+    },
+    beyond: {
+      label: 'Beyond',
+      credit: 'Drawing of the solar system. Not to scale.',
+      bg: '#05070c'
+    }
+  };
+  var ORDER = ['moon', 'mars', 'beyond'];
+  var ALL = (window.ARTIFACTS || []).slice();
+  var KEY = 'sentinels-found-v1';
+
+  var $ = function (id) { return document.getElementById(id); };
+  var stage = $('stage'), viewport = $('viewport'), panel = $('panel');
+  var state = { world: 'moon', zoom: 1, sel: null, level: null, found: loadFound() };
+
+  function loadFound() {
+    try { return new Set(JSON.parse(localStorage.getItem(KEY) || '[]')); }
+    catch (e) { return new Set(); }
+  }
+  function saveFound() {
+    try { localStorage.setItem(KEY, JSON.stringify(Array.from(state.found))); } catch (e) {}
+  }
+  function el(tag, attrs, kids) {
+    var n = document.createElement(tag);
+    if (attrs) Object.keys(attrs).forEach(function (k) {
+      if (k === 'text') n.textContent = attrs[k];
+      else if (k === 'class') n.className = attrs[k];
+      else n.setAttribute(k, attrs[k]);
+    });
+    (kids || []).forEach(function (c) { if (c) n.appendChild(typeof c === 'string' ? document.createTextNode(c) : c); });
+    return n;
+  }
+  function inWorld(w) { return ALL.filter(function (a) { return a.world === w; }); }
+  function byId(id) { return ALL.filter(function (a) { return a.id === id; })[0]; }
+
+  /* ---------- tabs and progress ---------- */
+  function drawTabs() {
+    var tabs = $('tabs'); tabs.textContent = '';
+    ORDER.forEach(function (w) {
+      var b = el('button', { type: 'button', class: 'tab', role: 'tab', 'aria-selected': String(w === state.world), 'data-w': w },
+        [WORLDS[w].label, el('span', { class: 'n', text: '(' + inWorld(w).length + ')' })]);
+      b.addEventListener('click', function () { setWorld(w); });
+      tabs.appendChild(b);
+    });
+  }
+  function drawProgress() {
+    var n = ALL.filter(function (a) { return state.found.has(a.id); }).length;
+    $('count').textContent = n; $('total').textContent = ALL.length;
+    $('meter').style.width = (ALL.length ? 100 * n / ALL.length : 0) + '%';
+  }
+
+  /* ---------- map ---------- */
+  function pos(a) {
+    if (a.world === 'beyond') return { x: a.bx, y: a.by };
+    return { x: (a.lon + 180) / 360 * 100, y: (90 - a.lat) / 180 * 100 };
+  }
+  function grid(level, src, lazy) {
+    var cols = Math.pow(2, level + 1), rows = Math.pow(2, level);
+    var g = el('div', { class: 'tiles', 'aria-hidden': 'true' });
+    g.style.gridTemplateColumns = 'repeat(' + cols + ', 1fr)';
+    for (var r = 0; r < rows; r++) for (var c = 0; c < cols; c++) {
+      var im = el('img', { alt: '', decoding: 'async', draggable: 'false', src: src(r, c) });
+      if (lazy) im.setAttribute('loading', 'lazy');
+      im.addEventListener('error', function () { this.style.visibility = 'hidden'; });
+      g.appendChild(im);
+    }
+    return g;
+  }
+  function drawTiles(force) {
+    var w = WORLDS[state.world], world = state.world;
+    var level = world === 'beyond' ? 'sky' : (state.zoom >= 4 ? 3 : 2);
+    var key = world + ':' + level;
+    if (!force && state.level === key) return;
+    state.level = key;
+    Array.prototype.forEach.call(stage.querySelectorAll('.tiles, svg.sky'), function (n) { n.remove(); });
+    stage.style.background = w.bg;
+    if (world === 'beyond') { stage.insertAdjacentHTML('afterbegin', skySvg()); return; }
+    /* Base map: NASA Trek tiles (zoom level 2) saved in this repository, so the map loads at once. */
+    var base = grid(2, function (r, c) { return 'maps/' + world + '/' + r + '_' + c + '.jpg'; }, false);
+    stage.insertBefore(base, stage.firstChild);
+    /* Closest zoom: sharper tiles straight from NASA Trek, drawn over the saved ones. */
+    if (level === 3) base.insertAdjacentElement('afterend', grid(3, function (r, c) { return w.tiles + '3/' + r + '/' + c + '.jpg'; }, true));
+  }
+  function skySvg() {
+    var orbits = [[150, 'Earth'], [215, 'Mars'], [300, 'Asteroid belt'], [430, 'Jupiter'], [560, 'Saturn'], [700, 'Uranus'], [830, 'Neptune']];
+    var s = '<svg class="sky" viewBox="0 0 1000 500" preserveAspectRatio="none" aria-hidden="true">';
+    s += '<defs><radialGradient id="sun"><stop offset="0" stop-color="#fff6c8"/><stop offset=".5" stop-color="#ffc940"/><stop offset="1" stop-color="#ffc940" stop-opacity="0"/></radialGradient></defs>';
+    var stars = [[90,60],[240,420],[310,90],[420,300],[505,45],[560,455],[640,180],[705,380],[760,70],[820,270],[880,440],[930,120],[965,330],[150,330],[470,160]];
+    stars.forEach(function (p) { s += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="1.6" fill="#cfd8f0" opacity=".7"/>'; });
+    orbits.forEach(function (o) {
+      var belt = o[1] === 'Asteroid belt';
+      s += '<circle cx="-40" cy="250" r="' + o[0] + '" fill="none" stroke="' + (belt ? '#8d7a5c' : '#3a466a') + '" stroke-width="' + (belt ? 16 : 1.5) + '"' + (belt ? ' stroke-dasharray="2 7" opacity=".7"' : '') + '/>';
+      s += '<text x="' + (o[0] - 40 + (belt ? 12 : 6)) + '" y="246" fill="#8c98b8" font-size="13" font-family="system-ui,sans-serif">' + o[1] + '</text>';
+    });
+    s += '<circle cx="-40" cy="250" r="95" fill="url(#sun)"/>';
+    s += '<text x="8" y="255" fill="#3a2a00" font-size="15" font-weight="700" font-family="system-ui,sans-serif">Sun</text>';
+    s += '<text x="905" y="246" fill="#8c98b8" font-size="13" font-family="system-ui,sans-serif">to the stars &#8594;</text>';
+    return s + '</svg>';
+  }
+  function drawPins() {
+    Array.prototype.forEach.call(stage.querySelectorAll('.pin'), function (p) { p.remove(); });
+    inWorld(state.world).forEach(function (a, i) {
+      var p = pos(a);
+      var b = el('button', { type: 'button', class: 'pin' + (state.found.has(a.id) ? ' found' : '') + (state.sel === a.id ? ' sel' : ''), 'data-id': a.id, 'aria-label': a.name + (state.found.has(a.id) ? ' (found)' : '') },
+        [state.found.has(a.id) ? '✓' : String(i + 1), el('span', { class: 'lab', text: a.short || a.name })]);
+      b.style.left = p.x + '%'; b.style.top = p.y + '%';
+      if (a.nudge) b.style.margin = (-15 + a.nudge[1]) + 'px 0 0 ' + (-15 + a.nudge[0]) + 'px';
+      b.addEventListener('click', function () { select(a.id, true); });
+      stage.appendChild(b);
+    });
+    stage.classList.toggle('labels', state.zoom >= 2 || state.world === 'beyond');
+  }
+  function drawChips() {
+    var ul = $('chips'); ul.textContent = '';
+    $('listtitle').textContent = 'Machines ' + (state.world === 'beyond' ? 'out there' : state.world === 'moon' ? 'on the Moon' : 'on Mars');
+    inWorld(state.world).forEach(function (a, i) {
+      var b = el('button', { type: 'button', class: 'chip' + (state.found.has(a.id) ? ' found' : ''), text: (i + 1) + '. ' + (a.short || a.name) });
+      if (state.sel === a.id) b.setAttribute('aria-current', 'true');
+      b.addEventListener('click', function () { select(a.id, true); });
+      ul.appendChild(el('li', null, [b]));
+    });
+  }
+  function setZoom(z, keep) {
+    var cx = (viewport.scrollLeft + viewport.clientWidth / 2) / (viewport.scrollWidth || 1);
+    var cy = (viewport.scrollTop + viewport.clientHeight / 2) / (viewport.scrollHeight || 1);
+    state.zoom = Math.max(1, Math.min(4, z));
+    var h = viewport.clientWidth / 2;
+    stage.style.width = (state.zoom * 100) + '%';
+    viewport.style.maxHeight = state.zoom > 1 ? Math.round(h) + 'px' : '';
+    drawTiles();
+    stage.classList.toggle('labels', state.zoom >= 2 || state.world === 'beyond');
+    if (keep !== false) {
+      viewport.scrollLeft = cx * viewport.scrollWidth - viewport.clientWidth / 2;
+      viewport.scrollTop = cy * viewport.scrollHeight - viewport.clientHeight / 2;
+    }
+    $('zin').disabled = state.zoom >= 4; $('zout').disabled = state.zoom <= 1;
+  }
+  function centerOn(a) {
+    if (state.zoom <= 1) return;
+    var p = pos(a);
+    viewport.scrollLeft = p.x / 100 * viewport.scrollWidth - viewport.clientWidth / 2;
+    viewport.scrollTop = p.y / 100 * viewport.scrollHeight - viewport.clientHeight / 2;
+  }
+  function setWorld(w, keepSel) {
+    state.world = w;
+    if (!keepSel) state.sel = null;
+    $('credit').textContent = WORLDS[w].credit;
+    drawTabs(); setZoom(1, false); drawTiles(true); drawPins(); drawChips();
+    if (!keepSel) drawPanel();
+  }
+
+  /* ---------- story panel ---------- */
+  function fmt(n) { return Number(n).toLocaleString('en-US'); }
+  function drawPanel() {
+    panel.textContent = '';
+    var a = state.sel && byId(state.sel);
+    if (!a) {
+      panel.appendChild(el('div', { class: 'hint' }, [
+        el('p', { class: 'big', text: '🔭', 'aria-hidden': 'true' }),
+        el('h2', { text: 'Pick a dot on the map' }),
+        el('p', { text: 'Each glowing dot is a real machine that people built, sent into space and had to leave there. Tap one to read what it was, what it discovered and where it is today.' }),
+        el('p', { text: 'Use the buttons at the top to travel between the Moon, Mars and the places beyond. Can you find all ' + ALL.length + '?' })
+      ]));
+      return;
+    }
+    var kids = [];
+    kids.push(el('div', null, [el('span', { class: 'badge', text: a.kind }), el('span', { class: 'badge', text: a.place })]));
+    kids.push(el('h2', { text: a.name }));
+    if (a.tagline) kids.push(el('p', { class: 'tagline', text: a.tagline }));
+    if (a.image && a.image.url) {
+      var img = el('img', { src: a.image.url, alt: a.image.alt || ('Picture of ' + a.name), loading: 'lazy' });
+      var fig = el('figure', null, [img, el('figcaption', { text: 'Image: ' + (a.image.credit || 'NASA') })]);
+      img.addEventListener('error', function () { fig.remove(); });
+      kids.push(fig);
+    }
+    if (a.facts && a.facts.length) {
+      kids.push(el('div', { class: 'facts' }, a.facts.map(function (f) {
+        return el('div', { class: 'fact' }, [el('small', { text: f[0] }), el('span', { text: f[1] })]);
+      })));
+    }
+    kids.push(el('h3', { text: 'The story' }));
+    (a.story || []).forEach(function (t) { kids.push(el('p', { text: t })); });
+    if (a.science && a.science.length) {
+      kids.push(el('h3', { text: 'What it taught us' }));
+      kids.push(el('ul', null, a.science.map(function (t) { return el('li', { text: t }); })));
+    }
+    if (a.planned_days && a.actual_days) {
+      var max = Math.max(a.planned_days, a.actual_days);
+      var row = function (cls, label, days, text) {
+        var fill = el('div', { class: 'fill' }); fill.style.width = (100 * days / max) + '%';
+        return [el('div', { class: 'row ' + cls }, [el('span', { text: label }), el('div', { class: 'track' }, [fill])]), el('p', { class: 'val', text: text })];
+      };
+      var life = el('div', { class: 'life' }, row('plan', 'The plan', a.planned_days, a.planned_label).concat(row('real', 'For real', a.actual_days, a.actual_label)));
+      var times = a.actual_days / a.planned_days;
+      if (a.wow) life.appendChild(el('p', { class: 'wow', text: a.wow }));
+      else if (times >= 2) life.appendChild(el('p', { class: 'wow', text: 'That is about ' + fmt(Math.round(times)) + ' times longer than planned!' }));
+      kids.push(el('h3', { text: 'How long did it work?' }));
+      kids.push(life);
+    }
+    if (a.ending) { kids.push(el('h3', { text: 'How it went quiet' })); kids.push(el('p', { text: a.ending })); }
+    if (a.today) { kids.push(el('h3', { text: 'Where is it now?' })); kids.push(el('p', { text: a.today })); }
+    if (a.sources && a.sources.length) {
+      kids.push(el('h3', { text: 'Check the facts (NASA)' }));
+      kids.push(el('ul', { class: 'sources' }, a.sources.map(function (s) {
+        return el('li', null, [el('a', { href: s[1], target: '_blank', rel: 'noopener', text: s[0] })]);
+      })));
+    }
+    var list = inWorld(a.world), i = list.indexOf(a);
+    var prev = el('button', { type: 'button', text: '← Previous' }), next = el('button', { type: 'button', text: 'Next →' });
+    prev.addEventListener('click', function () { select(list[(i - 1 + list.length) % list.length].id, true); });
+    next.addEventListener('click', function () { select(list[(i + 1) % list.length].id, true); });
+    kids.push(el('div', { class: 'nav' }, [prev, next]));
+    if (ALL.length && ALL.every(function (x) { return state.found.has(x.id); })) {
+      kids.push(el('p', { class: 'done', text: '⭐ You found all ' + ALL.length + ' sentinels. They are silent, but now you can tell their stories.' }));
+    }
+    kids.forEach(function (k) { panel.appendChild(k); });
+  }
+  function select(id, focus) {
+    var a = byId(id); if (!a) return;
+    state.sel = id; state.found.add(id); saveFound();
+    if (a.world !== state.world) setWorld(a.world, true);
+    drawPins(); drawChips(); drawProgress(); drawPanel(); centerOn(a);
+    try { history.replaceState(null, '', '#' + id); } catch (e) {}
+    if (focus) {
+      panel.focus({ preventScroll: true });
+      if (window.matchMedia('(max-width: 900px)').matches) panel.scrollIntoView({ block: 'start' });
+    }
+  }
+
+  /* ---------- controls ---------- */
+  $('zin').addEventListener('click', function () { setZoom(state.zoom * 2); });
+  $('zout').addEventListener('click', function () { setZoom(state.zoom / 2); });
+  var drag = null;
+  viewport.addEventListener('pointerdown', function (e) {
+    if (e.pointerType !== 'mouse' || e.target.closest('.pin')) return;
+    drag = { x: e.clientX, y: e.clientY, l: viewport.scrollLeft, t: viewport.scrollTop };
+    viewport.classList.add('drag');
+  });
+  window.addEventListener('pointermove', function (e) {
+    if (!drag) return;
+    viewport.scrollLeft = drag.l - (e.clientX - drag.x);
+    viewport.scrollTop = drag.t - (e.clientY - drag.y);
+  });
+  window.addEventListener('pointerup', function () { drag = null; viewport.classList.remove('drag'); });
+  window.addEventListener('resize', function () { setZoom(state.zoom); });
+
+  /* ---------- start ---------- */
+  drawProgress();
+  var first = byId(decodeURIComponent(location.hash.slice(1)));
+  setWorld(first ? first.world : 'moon');
+  if (first) select(first.id, false);
+})();
+</script>
+</body>
+</html>

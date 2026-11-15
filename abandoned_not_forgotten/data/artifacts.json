@@ -1,0 +1,720 @@
+{
+  "generated": "2026-11-15",
+  "conventions": "All facts were read from the NASA pages listed in each entry's sources (fetched 2026-11-15). lat is in degrees, positive north / negative south. lon is the positive number printed by NASA, measured in the direction given by lon_convention (E or W). null means the pages did not state the value. 'notes' is an extra field that records caveats and places where two NASA pages disagree.",
+  "artifacts": [
+    {
+      "id": "apollo-11-eagle-descent-stage",
+      "name": "Apollo 11 Lunar Module \"Eagle\" descent stage",
+      "kind": "descent stage",
+      "where": "Moon",
+      "site_name": "Mare Tranquillitatis (Sea of Tranquility), Tranquility Base",
+      "lat": 0.67416,
+      "lon": 23.47314,
+      "lon_convention": "E",
+      "mission": "Apollo 11",
+      "launch_date": "1969-07-16",
+      "arrival_date": "1969-07-20",
+      "last_contact_or_end": "1969-07-21",
+      "planned_lifetime": null,
+      "actual_lifetime": "The Lunar Module spent 21 hours, 36 minutes on the lunar surface before its ascent stage lifted off; the descent stage stayed behind.",
+      "purpose": "Eagle carried Neil Armstrong and Buzz Aldrin down to the Moon, the first crewed landing. Its lower half (the descent stage) held the landing engine, fuel tanks and stowed equipment, and then served as the launch pad for the trip back up.",
+      "discoveries": [
+        "The crew collected 21.55 kg of lunar rock and soil, including two core tube samples.",
+        "They set up the EASEP science package: a passive seismometer to listen for moonquakes and a lunar dust detector.",
+        "They placed a laser ranging retroreflector, which needs no power, near the experiments."
+      ],
+      "how_it_ended": "On 21 July 1969 the ascent stage launched from the top of the descent stage and carried the astronauts back to orbit, leaving the descent stage on the Moon. The EASEP experiments stopped accepting commands on 27 August 1969.",
+      "status_today": "The descent stage was left behind on the Moon at the landing site; the ascent stage was jettisoned in lunar orbit and its fate is not known.",
+      "fun_facts": [
+        "There were no seats in the Lunar Module.",
+        "A plaque on the ladder leg says that people from planet Earth first set foot on the Moon in July 1969 and came in peace for all mankind.",
+        "The two astronauts walked a total of only about 250 meters on the surface."
+      ],
+      "nssdca_id": "1969-059C",
+      "sources": [
+        "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1969-059C"
+      ],
+      "image": {
+        "url": "https://nssdc.gsfc.nasa.gov/planetary/image/ap11_lm_as11_40_5927.jpg",
+        "credit": null,
+        "page": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1969-059C"
+      },
+      "notes": "last_contact_or_end is the ascent-stage liftoff date (when the descent stage was left). The NSSDCA page spells the site 'Mare Tranquilitatis'. The page gives no credit line for the image (alt text: 'Image of the Apollo 11 Lunar Module / EASEP spacecraft')."
+    },
+    {
+      "id": "apollo-15-lunar-roving-vehicle",
+      "name": "Lunar Roving Vehicle (Apollo 15)",
+      "kind": "rover",
+      "where": "Moon",
+      "site_name": "Mare Imbrium region at the foot of the Apennine mountains, near Hadley Rille",
+      "lat": 26.13239,
+      "lon": 3.6333,
+      "lon_convention": "E",
+      "mission": "Apollo 15",
+      "launch_date": "1971-07-26",
+      "arrival_date": "1971-07-30",
+      "last_contact_or_end": "1971-08-02",
+      "planned_lifetime": "Each rover was used on three traverses, one per day over the three-day course of each mission.",
+      "actual_lifetime": "On Apollo 15 the LRV was driven a total of 27.8 km in 3 hours, 2 minutes of driving time.",
+      "purpose": "The Lunar Roving Vehicle was an electric car built for the Moon's low gravity and vacuum. It let astronauts travel much farther from their lander than they could on foot.",
+      "discoveries": [
+        "Apollo 15 astronauts David Scott and James Irwin used it to explore within 5 km of the lander, reaching the edge of Hadley Rille and the base of the Apennine Mountains.",
+        "Apollo 15 collected 77.31 kg of rock and soil samples during its three moonwalks.",
+        "Two more rovers followed: Apollo 16 drove 26.7 km in the Descartes highlands and Apollo 17 drove 35.9 km near Mare Serenitatis.",
+        "Apollo 17 astronaut Harrison Schmitt said the major discoveries of Apollo 15, 16 and 17 would not have been possible without the rover."
+      ],
+      "how_it_ended": "The rover was last driven on the third moonwalk on 2 August 1971, and the astronauts lifted off the same day. Its two silver-zinc batteries were not rechargeable.",
+      "status_today": "Three LRVs were driven on the Moon (Apollo 15, 16 and 17); the pages do not describe their present condition.",
+      "fun_facts": [
+        "It was the first time a vehicle of this type had been used on the Moon.",
+        "The rover folded up and hung in a bay on the side of the Lunar Module for the trip.",
+        "It was developed in only 17 months and had a mass of 210 kg."
+      ],
+      "nssdca_id": "1971-063C",
+      "sources": [
+        "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1971-063C",
+        "https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo_lrv.html",
+        "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1972-031C",
+        "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1972-096C"
+      ],
+      "image": {
+        "url": "https://nssdc.gsfc.nasa.gov/planetary/image/as15_88_11901.jpg",
+        "credit": null,
+        "page": "https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo_lrv.html"
+      },
+      "notes": "lat/lon are the Apollo 15 Lunar Module landing site; the pages do not give the rover's final parking spot. NSSDCA ID 1971-063C is the Apollo 15 Lunar Module/ALSEP record, which lists 'Rover 15' as an alternate name. Other LRV landing sites: Apollo 16 LM at 8.9730 S, 15.5002 E (launched 1972-04-16, landed 21 April 1972 UT); Apollo 17 LM at 20.1911 N, 30.7723 E (launched 1972-12-07, landed 11 December 1972). Four rovers were built; the fourth was used for spare parts. Image has no credit line on the page (alt text: 'Apollo 15 Lunar Roving Vehicle'); the full-size file is about 3.6 MB."
+    },
+    {
+      "id": "apollo-12-alsep",
+      "name": "Apollo 12 ALSEP (Apollo Lunar Surface Experiments Package)",
+      "kind": "instrument package",
+      "where": "Moon",
+      "site_name": "Oceanus Procellarum",
+      "lat": -3.0094,
+      "lon": 23.4246,
+      "lon_convention": "W",
+      "mission": "Apollo 12",
+      "launch_date": "1969-11-14",
+      "arrival_date": "1969-11-19",
+      "last_contact_or_end": "1977-09-30",
+      "planned_lifetime": null,
+      "actual_lifetime": "The central station was turned on 19 November 1969 and shut down along with the other ALSEP stations on 30 September 1977.",
+      "purpose": "ALSEP was a set of science instruments that astronauts set up on the Moon and left running after they went home. A central station powered the instruments and radioed their measurements to Earth.",
+      "discoveries": [
+        "Its seismometer recorded the first artificial moonquake, made when the discarded Apollo 12 Lunar Module was crashed into the Moon about 60 km away.",
+        "Its instruments were built to measure moonquakes, the Moon's magnetic field, the solar wind, dust and any atmosphere the Moon may have.",
+        "Later Apollo crews set up ALSEPs too (the Apollo 15, 16 and 17 pages describe theirs); Apollo 11 carried a simpler forerunner called EASEP."
+      ],
+      "how_it_ended": "All of the ALSEP stations were shut down on 30 September 1977.",
+      "status_today": "The package was deployed and left on the lunar surface; it has been switched off since 1977.",
+      "fun_facts": [
+        "It was powered by a small nuclear generator that turned the heat of plutonium-238 into about 70 watts of electricity.",
+        "The astronauts pointed its antenna at Earth by hand.",
+        "Apollo 12 landed within about 180 meters of the old Surveyor 3 robot lander."
+      ],
+      "nssdca_id": "1969-099C",
+      "sources": [
+        "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1969-099C",
+        "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1969-059C",
+        "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1971-063C",
+        "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1972-031C",
+        "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1972-096C"
+      ],
+      "image": {
+        "url": "https://nssdc.gsfc.nasa.gov/planetary/image/apollo12_lunar_module.jpg",
+        "credit": null,
+        "page": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1969-099C"
+      },
+      "notes": "lat/lon are the ALSEP central station (the Lunar Module itself landed at 3.0128 S, 23.4219 W). Other stations stated on NSSDCA pages: Apollo 15 central station at 26.1341 N, 3.6298 E, turned on 31 July 1971; Apollo 17 station turned on 12 December 1972; all shut down 30 September 1977. The pages list what the instruments were designed to measure, not their results. No planned lifetime is stated. Image has no credit line (alt text: 'Image of the Apollo 12 Lunar Module / ALSEP spacecraft')."
+    },
+    {
+      "id": "surveyor-3",
+      "name": "Surveyor 3",
+      "kind": "lander",
+      "where": "Moon",
+      "site_name": "Southeastern Oceanus Procellarum, inside a 200-meter crater",
+      "lat": -3.0162,
+      "lon": 336.582,
+      "lon_convention": "E",
+      "mission": "Surveyor 3 (Surveyor program)",
+      "launch_date": "1967-04-17",
+      "arrival_date": "1967-04-20",
+      "last_contact_or_end": "1967-05-04",
+      "planned_lifetime": null,
+      "actual_lifetime": "It operated through the lunar day until after local sunset on 3 May 1967; the last data were returned on 4 May 1967.",
+      "purpose": "The Surveyor program sent seven robot landers to practise soft landings and test the lunar surface before astronauts arrived. Surveyor 3 was the second to land softly and the first to carry a scoop for digging in the soil.",
+      "discoveries": [
+        "Its scoop dug four trenches up to 18 cm deep and showed the soil behaves like wet sand.",
+        "Tests showed the ground was firm enough to hold the weight of an Apollo Lunar Module.",
+        "Its TV camera returned 6,326 pictures of the surrounding surface.",
+        "Parts brought home by Apollo 12 let scientists study what about two and a half years on the Moon does to hardware."
+      ],
+      "how_it_ended": "Last contact was on 4 May 1967, two days after the lunar night began, and Surveyor 3 did not wake up after the two-week night.",
+      "status_today": "The lander still sits where it stopped, minus about 10 kg of parts that Apollo 12 astronauts removed; its TV camera is on display at the Smithsonian National Air and Space Museum in Washington, D.C.",
+      "fun_facts": [
+        "Shiny rocks confused its landing radar, so it bounced twice (to about 10 meters, then 3 meters) before settling down.",
+        "More than two years later, Apollo 12 astronauts Pete Conrad and Alan Bean landed about 180 meters away and walked over to visit it.",
+        "It took about 20 seconds to send a single 200-line picture to Earth."
+      ],
+      "nssdca_id": "1967-035A",
+      "sources": [
+        "https://science.nasa.gov/mission/surveyor-3/",
+        "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1967-035A",
+        "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1969-099C"
+      ],
+      "image": {
+        "url": "https://assets.science.nasa.gov/dynamicimage/assets/science/psd/solar/2023/07/as12-48-7134_1280.jpg?w=1280&h=1280&fit=clip&crop=faces%2Cfocalpoint",
+        "credit": "NASA",
+        "page": "https://science.nasa.gov/mission/surveyor-3/"
+      },
+      "notes": "lat/lon are from NSSDCA (3.0162 S, 336.582 E, from Lunar Reconnaissance Orbiter images); science.nasa.gov gives 3 degrees south, 23.41 degrees west, which is the same place. Disagreement between NASA pages: science.nasa.gov says Apollo 12 landed on Nov. 18, 1969 and visited Surveyor 3 on Nov. 19; NSSDCA gives 19 November (06:54 UT) and 20 November (UT). The Surveyor program built and launched seven spacecraft at a total cost of $469 million (NSSDCA)."
+    },
+    {
+      "id": "sojourner",
+      "name": "Sojourner rover (Mars Pathfinder)",
+      "kind": "rover",
+      "where": "Mars",
+      "site_name": "Ares Vallis",
+      "lat": 19.33,
+      "lon": 33.55,
+      "lon_convention": "W",
+      "mission": "Mars Pathfinder",
+      "launch_date": "1996-12-04",
+      "arrival_date": "1997-07-04",
+      "last_contact_or_end": "1997-09-27",
+      "planned_lifetime": "The rover's primary objectives were scheduled for the first seven sols (Martian days).",
+      "actual_lifetime": "The lander and rover returned data from landing on 4 July 1997 until the final transmission on 27 September 1997.",
+      "purpose": "Mars Pathfinder was a technology test: a cheaper way to land on Mars using airbags, and the first robot rover ever driven on Mars. Sojourner carried cameras and an instrument to find out what Martian rocks and soil are made of.",
+      "discoveries": [
+        "Rounded pebbles and cobbles at the landing site suggested rocks formed in running water during a warmer past.",
+        "The mission returned more than 16,500 lander images, 550 rover images and more than 15 chemical analyses of rocks and soil.",
+        "It saw dust devils and early-morning water-ice clouds.",
+        "Radio tracking of the lander suggested Mars has a metal core between about 1,300 and 2,000 km in radius."
+      ],
+      "how_it_ended": "Communications with the lander were lost for unknown reasons on 27 September 1997. All of the rover's communications went through the lander.",
+      "status_today": "Sojourner and its lander, named the Carl Sagan Memorial Station, have been silent since 1997.",
+      "fun_facts": [
+        "Sojourner weighed just 23 pounds (10.6 kg) and stood 1 foot (30 cm) tall.",
+        "The lander, wrapped in airbags, bounced like a giant beach ball about 15 times, as high as 50 feet (15 meters).",
+        "The rover is named after the American civil-rights crusader Sojourner Truth."
+      ],
+      "nssdca_id": "MESURPR",
+      "sources": [
+        "https://science.nasa.gov/mission/mars-pathfinder/",
+        "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=MESURPR",
+        "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1996-068A"
+      ],
+      "image": {
+        "url": "https://assets.science.nasa.gov/dynamicimage/assets/science/psd/solar/2023/09/p/i/a/0/PIA01551-1.jpg?w=1099&h=572&fit=clip&crop=faces%2Cfocalpoint",
+        "credit": "NASA/JPL-Caltech",
+        "page": "https://science.nasa.gov/mission/mars-pathfinder/"
+      },
+      "notes": "MESURPR is the NSSDCA ID of the rover; the Mars Pathfinder lander is 1996-068A. The rover rolled onto the surface on 6 July 1997 at about 05:40 UT (the night of July 5 in U.S. time, sol 2). Landing coordinates are from NSSDCA."
+    },
+    {
+      "id": "spirit",
+      "name": "Spirit (Mars Exploration Rover A)",
+      "kind": "rover",
+      "where": "Mars",
+      "site_name": "Gusev Crater (Columbia Memorial Station)",
+      "lat": -14.5692,
+      "lon": 175.4729,
+      "lon_convention": "E",
+      "mission": "Mars Exploration Rovers",
+      "launch_date": "2003-06-10",
+      "arrival_date": "2004-01-03",
+      "last_contact_or_end": "2010-03-22",
+      "planned_lifetime": "The mission was originally planned to last 90 Martian days.",
+      "actual_lifetime": "Spirit operated for 6 years, 2 months, and 19 days, more than 25 times its original intended lifetime.",
+      "purpose": "Spirit and its twin Opportunity were robot geologists sent to opposite sides of Mars to look for clues of past water. Spirit landed in Gusev Crater, a possible former lake.",
+      "discoveries": [
+        "It unearthed a patch of nearly pure silica, the kind of material that forms in hot springs or steam vents, strong evidence that ancient Mars was much wetter.",
+        "It found signs of an ancient volcanic explosion at a low plateau called Home Plate.",
+        "At a place called Comanche it found carbonate-rich rocks that formed when Mars was warm and wet with non-acidic water.",
+        "It filmed dust devils moving across the Martian surface."
+      ],
+      "how_it_ended": "Spirit got stuck in soft soil on 1 May 2009 and was not heard from after 22 March 2010, most probably because of the extreme cold. NASA ended its recovery efforts on 25 May 2011.",
+      "status_today": "Spirit is silent beside Home Plate in Gusev Crater, its final resting place.",
+      "fun_facts": [
+        "Each rover is about the size of a golf cart.",
+        "A broken front wheel helped science: as it dragged, it scraped up the bright silica-rich soil.",
+        "Dust devils once swept dust off its solar panels, raising its power from about 60% to 93%."
+      ],
+      "nssdca_id": "2003-027A",
+      "sources": [
+        "https://science.nasa.gov/mission/mars-exploration-rovers-spirit-and-opportunity/",
+        "https://science.nasa.gov/mission/mer-spirit/",
+        "https://science.nasa.gov/mission/mars-exploration-rovers-spirit-and-opportunity/science-highlights/",
+        "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2003-027A"
+      ],
+      "image": {
+        "url": "https://assets.science.nasa.gov/dynamicimage/assets/science/psd/solar/2023/07/rover2-1.jpg?w=1280&h=960&fit=clip&crop=faces%2Cfocalpoint",
+        "credit": "NASA/JPL-Caltech",
+        "page": "https://science.nasa.gov/mission/mer-spirit/"
+      },
+      "notes": "arrival_date is as NASA's mission page gives it (20:35 PST on Jan. 3, 2004); in Universal Time that is 4 January 2004, the date NSSDCA uses. last_contact_or_end is the last contact; the mission was declared complete on 2011-05-25 (the 'Mission End' shown on the Spirit page). Spirit drove 4.8 miles (7.73 km). The image is an illustration."
+    },
+    {
+      "id": "opportunity",
+      "name": "Opportunity (Mars Exploration Rover B)",
+      "kind": "rover",
+      "where": "Mars",
+      "site_name": "Meridiani Planum, Eagle crater (Challenger Memorial Station)",
+      "lat": -1.9483,
+      "lon": 354.47417,
+      "lon_convention": "E",
+      "mission": "Mars Exploration Rovers",
+      "launch_date": "2003-07-07",
+      "arrival_date": "2004-01-24",
+      "last_contact_or_end": "2018-06-10",
+      "planned_lifetime": "Designed to last just 90 Martian days (about three Earth months) and to travel 1,100 yards (1,000 meters).",
+      "actual_lifetime": "Opportunity operated for almost 15 years, exceeding its life expectancy by 60 times, and drove 28.06 miles (45.16 kilometers).",
+      "purpose": "Opportunity and its twin Spirit were sent to places on Mars that looked as if liquid water had once been there. Opportunity landed on Meridiani Planum, where minerals seen from orbit hinted at a wet history.",
+      "discoveries": [
+        "It found small round grains of hematite, nicknamed blueberries, a mineral that typically forms in water.",
+        "Near Endeavour Crater it found bright veins of gypsum left by water flowing through cracks in the rock.",
+        "It found clay minerals formed in neutral (non-acidic) water, the friendliest conditions for ancient microbes of any place it studied.",
+        "It discovered an iron-nickel meteorite, named Heat Shield Rock, lying on the Martian surface."
+      ],
+      "how_it_ended": "A Mars-wide dust storm in 2018 cut the sunlight reaching its solar panels, and its last signal was heard on 10 June 2018. NASA declared the mission complete on 13 February 2019.",
+      "status_today": "Opportunity rests silent in Perseverance Valley on the rim of Endeavour Crater; its off-world driving record stood until the Perseverance rover passed it on Oct. 11, 2026.",
+      "fun_facts": [
+        "It was the first vehicle to drive more than a marathon (26.219 miles) on another world.",
+        "It landed inside a crater, which NASA calls scoring a hole in one.",
+        "A cable shield on its rock-grinding tool was made from aluminum recovered from the World Trade Center towers."
+      ],
+      "nssdca_id": "2003-032A",
+      "sources": [
+        "https://science.nasa.gov/mission/mars-exploration-rovers-spirit-and-opportunity/",
+        "https://science.nasa.gov/mission/mer-opportunity/",
+        "https://science.nasa.gov/mission/mars-exploration-rovers-spirit-and-opportunity/science-highlights/",
+        "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2003-032A"
+      ],
+      "image": {
+        "url": "https://assets.science.nasa.gov/dynamicimage/assets/science/psd/solar/internal_resources/3447/solar_panels_on_rover_seen_from_above.jpeg?w=1238&h=968&fit=clip&crop=faces%2Cfocalpoint",
+        "credit": "NASA/JPL-Caltech/Cornell Univ./Arizona State Univ.",
+        "page": "https://science.nasa.gov/mission/mer-opportunity/"
+      },
+      "notes": "Dates are in U.S. Pacific time as NASA's mission pages give them: launch July 7, 2003 PDT (NSSDCA: 8 July 2003, 03:18 UT) and landing Jan. 24, 2004 PST (Jan. 25, 2004 Universal Time; the Opportunity page uses both dates). last_contact_or_end is the last signal; end of mission was declared 2019-02-13. The image is a 2014 self-portrait."
+    },
+    {
+      "id": "viking-1-lander",
+      "name": "Viking 1 lander (Thomas Mutch Memorial Station)",
+      "kind": "lander",
+      "where": "Mars",
+      "site_name": "Western slopes of Chryse Planitia (Golden Plain)",
+      "lat": 22.483,
+      "lon": 47.94,
+      "lon_convention": "W",
+      "mission": "Viking 1",
+      "launch_date": "1975-08-20",
+      "arrival_date": "1976-07-20",
+      "last_contact_or_end": "1982-11-11",
+      "planned_lifetime": "The primary mission for both Viking 1 and Viking 2 ended in November 1976.",
+      "actual_lifetime": "The Viking 1 Lander held the record for the longest continuous operation on the surface of Mars, 6 years and 116 days, until Opportunity broke it in 2010.",
+      "purpose": "Viking 1 was the first of a pair of spacecraft, each with an orbiter and a lander, sent to study Mars in detail and collect evidence about whether life is possible there.",
+      "discoveries": [
+        "It sent back the first photographs ever taken on the surface of Mars.",
+        "It measured temperatures from minus 86 degrees Celsius before dawn to minus 33 degrees Celsius in the afternoon.",
+        "Its life-detection experiments gave puzzling results, but the main test for organic compounds found none.",
+        "It found a lot of sulfur in the soil and sent weather reports for years."
+      ],
+      "how_it_ended": "The lander worked until 11 November 1982, when a faulty command sent from Earth interrupted communications. Attempts to regain contact did not succeed.",
+      "status_today": "The lander is silent on Chryse Planitia; it was renamed the Thomas Mutch Memorial Station after the leader of the Viking imaging team.",
+      "fun_facts": [
+        "Viking 1 made the first truly successful landing on Mars.",
+        "The first landing site looked too rough in pictures from orbit, so scientists picked a different one.",
+        "The lander looked a bit like a much larger version of the Surveyor Moon landers."
+      ],
+      "nssdca_id": "1975-075C",
+      "sources": [
+        "https://science.nasa.gov/mission/viking-1/",
+        "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1975-075C",
+        "https://science.nasa.gov/mission/mer-opportunity/"
+      ],
+      "image": {
+        "url": "https://assets.science.nasa.gov/dynamicimage/assets/science/psd/photojournal/pia/pia00/pia00381/PIA00381.tif?w=2048",
+        "credit": null,
+        "page": "https://science.nasa.gov/mission/viking-1/"
+      },
+      "notes": "NASA pages disagree: science.nasa.gov says the lander stopped on Nov. 11, 1982, NSSDCA says contact was lost on 13 November 1982. Coordinates used are from science.nasa.gov (22.483 N, 47.94 W); NSSDCA gives 22.27 N, 312.05 E (planetocentric). science.nasa.gov says it was renamed in January 1982, NSSDCA says January 1981. NSSDCA ID 1975-075C is the lander (verified on its page). The image (first photograph from the surface of Mars, per its alt text) has no credit line on the page."
+    },
+    {
+      "id": "viking-2-lander",
+      "name": "Viking 2 lander (Gerald Soffen Memorial Station)",
+      "kind": "lander",
+      "where": "Mars",
+      "site_name": "Utopia Planitia",
+      "lat": 47.968,
+      "lon": 225.71,
+      "lon_convention": "W",
+      "mission": "Viking 2",
+      "launch_date": "1975-09-09",
+      "arrival_date": "1976-09-03",
+      "last_contact_or_end": "1980-04-12",
+      "planned_lifetime": "The primary mission for both Viking 1 and Viking 2 ended in November 1976.",
+      "actual_lifetime": "The Viking 2 Lander operated on the surface for 1281 Mars days.",
+      "purpose": "Viking 2 was the twin of Viking 1: an orbiter and a lander sent to explore Mars in detail and look for signs of life. Its lander was aimed at Utopia Planitia, where planners thought the chances of finding signs of life were better.",
+      "discoveries": [
+        "Its life-detection experiments gave the same kind of unclear answer as Viking 1: no proof of life.",
+        "Scientists concluded that chemicals made in the soil by ultraviolet light could mimic some signs of living things.",
+        "Its cameras showed a rockier, flatter landscape than the Viking 1 site.",
+        "Together the two Viking landers returned 4,500 photos of their landing sites."
+      ],
+      "how_it_ended": "The lander kept sending data until April 1980; NSSDCA says it was turned off when its batteries failed.",
+      "status_today": "The lander is silent on Utopia Planitia; in July 2001 it was renamed the Gerald Soffen Memorial Station after the Viking project scientist.",
+      "fun_facts": [
+        "It landed about 4,000 miles (6,460 km) from Viking 1.",
+        "It came to rest tilted, with one leg on a rock.",
+        "It was meant to launch first, but a battery problem made it go second, so it was renamed Viking 2."
+      ],
+      "nssdca_id": "1975-083C",
+      "sources": [
+        "https://science.nasa.gov/mission/viking-2/",
+        "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1975-083C",
+        "https://science.nasa.gov/mission/viking-1/"
+      ],
+      "image": {
+        "url": "https://assets.science.nasa.gov/dynamicimage/assets/science/psd/solar/2023/07/PIA01522.jpg?w=2048&h=1616&fit=clip&crop=faces%2Cfocalpoint",
+        "credit": "NASA/JPL-Caltech",
+        "page": "https://science.nasa.gov/mission/viking-2/"
+      },
+      "notes": "NASA pages disagree: science.nasa.gov gives the end of the lander mission as April 12, 1980, NSSDCA says it was turned off on April 11, 1980. Coordinates used are from science.nasa.gov (47.968 N, 225.71 W); NSSDCA gives 47.6673 N, 134.2809 E. Tilt is 8.5 degrees on science.nasa.gov and 8.2 degrees on NSSDCA. Touchdown time is 22:37:50 UT on science.nasa.gov and 22:58:20 UT on NSSDCA."
+    },
+    {
+      "id": "phoenix",
+      "name": "Phoenix Mars Lander",
+      "kind": "lander",
+      "where": "Mars",
+      "site_name": "Green Valley of Vastitas Borealis (arctic plains)",
+      "lat": 68.22,
+      "lon": 234.25,
+      "lon_convention": "E",
+      "mission": "Phoenix",
+      "launch_date": "2007-08-04",
+      "arrival_date": "2008-05-25",
+      "last_contact_or_end": "2008-11-02",
+      "planned_lifetime": "Originally planned 90-day mission.",
+      "actual_lifetime": "Phoenix completed its planned 90-day mission by the end of August 2008 and kept working until its last signal on 2 November 2008.",
+      "purpose": "Phoenix was sent to the Martian arctic to dig into the icy ground, study the history of water there and check whether the site could ever have been friendly to life.",
+      "discoveries": [
+        "It confirmed that water ice lies just under the surface: bright chunks in a trench it dug vanished after four days.",
+        "It discovered a chemical called perchlorate in the soil, a possible energy source for microbes.",
+        "Its chemistry lab found the soil was alkaline and contained salts."
+      ],
+      "how_it_ended": "As the Martian summer ended there was less sunlight for its solar panels. It made its last transmission on 2 November 2008 before its power ran out.",
+      "status_today": "The mission has officially ended; the lander remains on the arctic plain where it touched down.",
+      "fun_facts": [
+        "A Mars orbiter photographed Phoenix hanging from its parachute, the first time one spacecraft photographed another during a planetary landing.",
+        "It landed farther north than any earlier mission, at a latitude like northern Alaska.",
+        "It waited 15 minutes for the dust to settle before opening its solar panels."
+      ],
+      "nssdca_id": "2007-034A",
+      "sources": [
+        "https://science.nasa.gov/mission/phoenix/",
+        "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2007-034A"
+      ],
+      "image": {
+        "url": "https://science.nasa.gov/wp-content/uploads/2024/03/phoenix-lander2.jpg?w=2048",
+        "credit": "NASA/JPL-Caltech/UA/Lockheed Martin",
+        "page": "https://science.nasa.gov/mission/phoenix/"
+      },
+      "notes": "Coordinates are from an image caption on science.nasa.gov (68.22 N, 234.25 E); NSSDCA gives a nominal 68.15 N, 125.9 W. Touchdown time is 23:38:38 UT on science.nasa.gov and 23:53:44 UT on NSSDCA. The science.nasa.gov page also calls it a 'three-month mission'. The image shows the lander with solar arrays open during a test on Earth. The Phoenix mission page (science.nasa.gov/mission/phoenix/) was fetched directly; the InSight page says InSight was built on the Phoenix lander design."
+    },
+    {
+      "id": "insight",
+      "name": "InSight lander",
+      "kind": "lander",
+      "where": "Mars",
+      "site_name": "Elysium Planitia (western side)",
+      "lat": 4.5,
+      "lon": 135.9,
+      "lon_convention": "E",
+      "mission": "InSight (Interior Exploration using Seismic Investigations, Geodesy and Heat Transport)",
+      "launch_date": "2018-05-05",
+      "arrival_date": "2018-11-26",
+      "last_contact_or_end": "2022-12-15",
+      "planned_lifetime": "The primary mission was scheduled to last about two years, ending 24 November 2020.",
+      "actual_lifetime": "About four years on the Red Planet (landed 26 November 2018, last transmission 15 December 2022).",
+      "purpose": "InSight was sent to study the deep inside of Mars, taking the planet's pulse and temperature with a seismometer and a heat probe. Learning how Mars is built helps explain how all rocky planets formed.",
+      "discoveries": [
+        "It made the first-ever detection of quakes on Mars and measured over 1,300 seismic events.",
+        "It found that Mars' core is molten and larger than expected, about 1,800 km in radius, and that the crust under the lander is 25 to 40 km thick.",
+        "It felt a quake caused by a big meteoroid strike that dug up buried water ice near the equator.",
+        "It collected the most complete weather record of any mission on the Martian surface."
+      ],
+      "how_it_ended": "The last transmission from InSight was received on 15 December 2022. After two failed attempts to reach it, the mission was declared over on 21 December 2022, presumably because its solar-charged batteries could no longer keep it running.",
+      "status_today": "The retired lander sits on Elysium Planitia, where a NASA Mars orbiter has spotted it from above.",
+      "fun_facts": [
+        "It recorded the low rumble of the Martian wind.",
+        "It sensed thousands of dust devils passing by, but its cameras never saw one.",
+        "Two briefcase-sized mini-spacecraft called MarCO flew to Mars along with it."
+      ],
+      "nssdca_id": "2018-042A",
+      "sources": [
+        "https://science.nasa.gov/mission/insight/",
+        "https://science.nasa.gov/mission/insight/science-highlights/",
+        "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2018-042A"
+      ],
+      "image": {
+        "url": "https://assets.science.nasa.gov/dynamicimage/assets/science/psd/mars/downloadable_items/3/8/38686_Mars-InSight-Solar-Panels-Open-pia196641.jpg?w=2048&h=1365&fit=clip&crop=faces%2Cfocalpoint",
+        "credit": "NASA/JPL-Caltech/Lockheed Martin Space",
+        "page": "https://science.nasa.gov/mission/insight/"
+      },
+      "notes": "lat/lon are the approximate center of the landing site as stated ('about 4.5 degrees north latitude and 135.9 degrees east longitude'). science.nasa.gov lists 'End of Mission: Dec. 15, 2022'; NSSDCA says the mission was declared over on 21 December 2022. The image shows the lander in a clean room on Earth (2015)."
+    },
+    {
+      "id": "ingenuity",
+      "name": "Ingenuity Mars Helicopter",
+      "kind": "helicopter",
+      "where": "Mars",
+      "site_name": "Jezero Crater",
+      "lat": null,
+      "lon": null,
+      "lon_convention": null,
+      "mission": "Mars 2020 (Perseverance)",
+      "launch_date": "2020-07-30",
+      "arrival_date": "2021-02-18",
+      "last_contact_or_end": "2024-01-25",
+      "planned_lifetime": "A technology demonstration that would make no more than five test flights in 30 days.",
+      "actual_lifetime": "72 flights across nearly three years (first flight April 19, 2021; last flight Jan. 18, 2024).",
+      "purpose": "Ingenuity was an experiment to prove that a powered aircraft can fly in the very thin air of Mars. It carried no science instruments.",
+      "discoveries": [
+        "It made the first powered, controlled flight on another planet on 19 April 2021.",
+        "It flew for 128.8 minutes in total, covered 10.5 miles (17.0 km) and climbed as high as 78.7 feet (24.0 meters).",
+        "It worked as an aerial scout, previewing places the Perseverance rover might explore.",
+        "It paved the way for future aircraft on Mars and possibly other worlds."
+      ],
+      "how_it_ended": "On its flight of 18 January 2024, contact was lost just before landing; the helicopter dropped about 1 meter and damaged its rotors, so it could no longer fly. The mission was completed on 25 January 2024.",
+      "status_today": "Ingenuity can no longer fly and its mission is complete; NASA is building on it with next-generation Mars helicopters.",
+      "fun_facts": [
+        "It rode to Mars strapped under the belly of the Perseverance rover.",
+        "It has a mass of only 1.8 kg (3.97 pounds).",
+        "Its first flight has been called a Wright Brothers moment."
+      ],
+      "nssdca_id": "2020-052A",
+      "sources": [
+        "https://science.nasa.gov/mission/mars-2020-perseverance/ingenuity-mars-helicopter/",
+        "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2020-052A"
+      ],
+      "image": {
+        "url": "https://science.nasa.gov/wp-content/uploads/2024/03/25762-pia24443-1200-0657a5.jpg?w=1200",
+        "credit": "NASA/JPL-Caltech/MSSS",
+        "page": "https://science.nasa.gov/mission/mars-2020-perseverance/ingenuity-mars-helicopter/"
+      },
+      "notes": "The pages give no latitude/longitude for Ingenuity. NSSDCA ID 2020-052A is the Mars 2020 record, which lists Ingenuity as an alternate name. last_contact_or_end is the mission-complete date; the last flight was 2024-01-18. The rotor-damage detail comes from NSSDCA."
+    },
+    {
+      "id": "dawn",
+      "name": "Dawn",
+      "kind": "orbiter",
+      "where": "Ceres orbit",
+      "site_name": null,
+      "lat": null,
+      "lon": null,
+      "lon_convention": null,
+      "mission": "Dawn",
+      "launch_date": "2007-09-27",
+      "arrival_date": "2015-03-05",
+      "last_contact_or_end": "2018-10-31",
+      "planned_lifetime": "End of prime mission: June 2016.",
+      "actual_lifetime": "Launched Sept. 27, 2007; the mission ended Nov. 1, 2018, after two extended missions that started in July 2016 and October 2017.",
+      "purpose": "Dawn was sent to the asteroid belt to orbit two very different small worlds, the giant asteroid Vesta and the dwarf planet Ceres. Comparing them shows what conditions were like when the solar system was just forming.",
+      "discoveries": [
+        "The famous bright spots on Ceres turned out to be deposits of carbonates and other salts.",
+        "It found plenty of ice on Ceres and signs of recent, possibly ongoing, geological activity.",
+        "It confirmed that a family of meteorites found on Earth (the HED meteorites) came from Vesta.",
+        "At Vesta it found two colossal impact basins and evidence of an iron core."
+      ],
+      "how_it_ended": "Dawn ran out of hydrazine propellant on 31 October 2018. Without it the spacecraft could no longer point its solar panels at the Sun or its antenna at Earth, and its radio signal was lost.",
+      "status_today": "Dawn is a silent, inert spacecraft still orbiting Ceres, where NASA expects it to stay for at least decades.",
+      "fun_facts": [
+        "It was the first spacecraft to orbit a main-belt asteroid and the first to reach a dwarf planet.",
+        "With its solar panels spread out it is about as long as a tractor-trailer, 65 feet (19.7 meters).",
+        "Its ion engines run on xenon gas, which is electrically charged and shot out to push the spacecraft."
+      ],
+      "nssdca_id": "2007-043A",
+      "sources": [
+        "https://science.nasa.gov/mission/dawn/",
+        "https://science.nasa.gov/mission/dawn/objectives/",
+        "https://science.nasa.gov/mission/dawn/science/overview/",
+        "https://science.nasa.gov/mission/dawn/science/ceres/",
+        "https://science.nasa.gov/mission/dawn/science/vesta/",
+        "https://science.nasa.gov/mission/dawn/mission-status/",
+        "https://science.nasa.gov/mission/dawn/technology/spacecraft/",
+        "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2007-043A"
+      ],
+      "image": {
+        "url": "https://science.nasa.gov/wp-content/uploads/2018/10/pia21906-ceres-full-globe-1280x900-1.jpg?w=1280",
+        "credit": "NASA/JPL-Caltech/UCLA/MPS/DLR/IDA",
+        "page": "https://science.nasa.gov/mission/dawn/science/ceres/"
+      },
+      "notes": "arrival_date is the Ceres arrival as science.nasa.gov gives it (March 5, 2015); NSSDCA says Dawn entered Ceres orbit on 6 March 2015 at 12:29 UT. It arrived at Vesta on 2011-07-16. The science.nasa.gov 'Mission Events' list prints 'Sept. 5, 2017: Vesta Departure', which looks like a typo: NSSDCA says Dawn left Vesta on 5 September 2012. NSSDCA says the final orbit will be stable for several hundred years. The image is Ceres as seen by Dawn, not the spacecraft itself."
+    },
+    {
+      "id": "near-shoemaker",
+      "name": "NEAR Shoemaker",
+      "kind": "orbiter",
+      "where": "Asteroid 433 Eros",
+      "site_name": "Just south of the saddle-shaped feature Himeros",
+      "lat": null,
+      "lon": null,
+      "lon_convention": null,
+      "mission": "NEAR (Near Earth Asteroid Rendezvous) Shoemaker",
+      "launch_date": "1996-02-17",
+      "arrival_date": "2000-02-14",
+      "last_contact_or_end": "2001-02-28",
+      "planned_lifetime": "The goal was to study the asteroid Eros from orbit for approximately one year.",
+      "actual_lifetime": "It orbited Eros from 14 February 2000 until touching down on 12 February 2001, then returned data from the surface for about two weeks.",
+      "purpose": "NEAR was sent to meet the near-Earth asteroid 433 Eros and study what it is made of, its shape, its insides and whether it has a magnetic field.",
+      "discoveries": [
+        "It showed that Eros has no magnetic field.",
+        "It returned about 160,000 images, roughly 10 times more data than originally planned.",
+        "On the way it flew past asteroid Mathilde and found it covered in craters and less dense than expected.",
+        "It found that Eros has a density similar to Earth's crust."
+      ],
+      "how_it_ended": "Although it was not built to land, NEAR was guided gently down onto Eros on 12 February 2001 and survived. Last contact was on 28 February 2001, when the spacecraft gave in to the extreme cold.",
+      "status_today": "NEAR Shoemaker rests silent on the surface of Eros; an attempt to contact it on Dec. 10, 2002 was unsuccessful.",
+      "fun_facts": [
+        "It was the first spacecraft to orbit an asteroid and the first to land on one.",
+        "It touched down at a gentle 4 miles per hour (6.4 km/h).",
+        "It was renamed in honor of geologist Eugene M. Shoemaker."
+      ],
+      "nssdca_id": "1996-008A",
+      "sources": [
+        "https://science.nasa.gov/mission/near-shoemaker/",
+        "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1996-008A"
+      ],
+      "image": {
+        "url": "https://assets.science.nasa.gov/dynamicimage/assets/science/psd/solar/2023/07/nearspacecraft.jpg?w=1350&h=1024&fit=clip&crop=faces%2Cfocalpoint",
+        "credit": "NASA",
+        "page": "https://science.nasa.gov/mission/near-shoemaker/"
+      },
+      "notes": "arrival_date is the day it entered orbit around Eros; touchdown was 2001-02-12. Touchdown time is 19:44 UT on science.nasa.gov and 20:01:52 UT on NSSDCA. No landing coordinates are given on the pages. 'kind' is orbiter because it was not designed as a lander. The image is an illustration."
+    },
+    {
+      "id": "pioneer-10",
+      "name": "Pioneer 10",
+      "kind": "probe",
+      "where": "Interstellar-bound",
+      "site_name": null,
+      "lat": null,
+      "lon": null,
+      "lon_convention": null,
+      "mission": "Pioneer 10",
+      "launch_date": "1972-03-02",
+      "arrival_date": "1973-12-04",
+      "last_contact_or_end": "2003-01-23",
+      "planned_lifetime": "Originally designed for a 21-month mission to fly by Jupiter.",
+      "actual_lifetime": "Pioneer 10 lasted more than 30 years.",
+      "purpose": "Pioneer 10 was NASA's first mission to the outer planets, sent to cross the asteroid belt and fly past Jupiter.",
+      "discoveries": [
+        "It was the first spacecraft to fly through the main asteroid belt, and it met fewer asteroid hits than expected.",
+        "It took about 500 pictures of Jupiter's atmosphere, clearly showing the Great Red Spot.",
+        "It was the first spacecraft to take close-up images of Jupiter's moon Ganymede.",
+        "It found that Jupiter's huge magnetic tail stretches almost 800 million km, all the way to Saturn's orbit."
+      ],
+      "how_it_ended": "Its nuclear power source slowly faded until the radio transmitter no longer had enough power. The last signal was received on 23 January 2003, and a final attempt to contact it on 4 March 2006 failed.",
+      "status_today": "The inert spacecraft is leaving the solar system, heading generally toward the red star Aldebaran, which it is expected to pass in about two million years.",
+      "fun_facts": [
+        "It carries an aluminum plaque with drawings of a man and a woman and a map showing where Earth is.",
+        "Its last signal came from 7.6 billion miles away and took 11 hours and 20 minutes to reach Earth.",
+        "It was the first human-made object to travel beyond Neptune's orbit."
+      ],
+      "nssdca_id": "1972-012A",
+      "sources": [
+        "https://science.nasa.gov/mission/pioneer-10/",
+        "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1972-012A"
+      ],
+      "image": {
+        "url": "https://science.nasa.gov/wp-content/uploads/2023/04/jupiter_pioneer_10_art-jpg.webp?w=2048",
+        "credit": "NASA",
+        "page": "https://science.nasa.gov/mission/pioneer-10/"
+      },
+      "notes": "NASA pages disagree on the launch date: science.nasa.gov says March 2, 1972 (01:49:04 UT); the NSSDCA 'Facts in Brief' line says 1972-03-03. arrival_date is the closest approach to Jupiter. Routine contact ended March 31, 1997; last telemetry was April 27, 2002. The most recent distance on the page is for Nov. 5, 2017 (about 118.824 AU from Earth). The image is an artist's concept."
+    },
+    {
+      "id": "pioneer-11",
+      "name": "Pioneer 11",
+      "kind": "probe",
+      "where": "Interstellar-bound",
+      "site_name": null,
+      "lat": null,
+      "lon": null,
+      "lon_convention": null,
+      "mission": "Pioneer 11",
+      "launch_date": "1973-04-06",
+      "arrival_date": "1974-12-03",
+      "last_contact_or_end": "1995-09-30",
+      "planned_lifetime": null,
+      "actual_lifetime": "The mission ended in 1995, 22 years after launch, when two instruments were still working.",
+      "purpose": "Pioneer 11, the sister ship of Pioneer 10, was sent to fly past Jupiter and then became the first spacecraft to study Saturn up close.",
+      "discoveries": [
+        "It was the first spacecraft to fly by Saturn, passing about 13,000 miles (21,000 km) from the planet.",
+        "It discovered a narrow ring outside Saturn's A ring, now called the F ring, and a new moon.",
+        "It gave the first clear evidence that Saturn has a magnetic field.",
+        "It returned the first pictures of Jupiter's polar regions."
+      ],
+      "how_it_ended": "Science operations stopped on 30 September 1995, when its nuclear generators could no longer power any experiments. Scientists received a few more minutes of engineering data on 24 November 1995, then lost contact again.",
+      "status_today": "Pioneer 11 is on a path out of the solar system and will pass near the star Lambda Aquila in almost four million years.",
+      "fun_facts": [
+        "Like Pioneer 10, it carries a small metal plaque with a message for anyone who might find it, an idea from Carl Sagan.",
+        "At Jupiter it was moving faster than any human-made object before it, more than 106,000 miles per hour.",
+        "It is one of five spacecraft on paths that will take them out of our solar system."
+      ],
+      "nssdca_id": "1973-019A",
+      "sources": [
+        "https://science.nasa.gov/mission/pioneer-11/",
+        "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1973-019A"
+      ],
+      "image": {
+        "url": "https://assets.science.nasa.gov/dynamicimage/assets/science/psd/solar/2023/07/Pioneer11_1600.jpg?w=1280&h=720&fit=clip&crop=faces%2Cfocalpoint",
+        "credit": null,
+        "page": "https://science.nasa.gov/mission/pioneer-11/"
+      },
+      "notes": "arrival_date is the Jupiter flyby; the Saturn flyby was 1979-09-01. last_contact_or_end is the last contact by NASA Ames; the last engineering data arrived 1995-11-24. No planned lifetime is stated on the pages. The most recent distance on the page is for Nov. 5, 2017 (about 97.590 AU from Earth). The image (an artist's concept) has a caption but no credit line on the page."
+    },
+    {
+      "id": "kepler",
+      "name": "Kepler space telescope",
+      "kind": "telescope",
+      "where": "Heliocentric orbit",
+      "site_name": null,
+      "lat": null,
+      "lon": null,
+      "lon_convention": null,
+      "mission": "Kepler / K2",
+      "launch_date": "2009-03-06",
+      "arrival_date": null,
+      "last_contact_or_end": "2018-10-30",
+      "planned_lifetime": "Designed to monitor about 100,000 stars over a period of three-and-a-half years.",
+      "actual_lifetime": "Nine years in deep space, counting its second mission, K2.",
+      "purpose": "Kepler was NASA's first planet-hunting mission. It stared at a patch of the Milky Way looking for Earth-sized planets around other stars by watching for tiny dips in a star's brightness when a planet passes in front of it.",
+      "discoveries": [
+        "It left a legacy of more than 2,600 planet discoveries outside our solar system.",
+        "It showed that our galaxy holds more planets than stars.",
+        "It found the first Earth-size planet in the habitable zone of another star, Kepler-186f.",
+        "It found a planet that orbits two stars, Kepler-16b."
+      ],
+      "how_it_ended": "Kepler ran out of the fuel it needed for science operations. On 30 October 2018 NASA announced it would be retired in its current, safe orbit away from Earth.",
+      "status_today": "The retired telescope circles the Sun in an Earth-trailing orbit.",
+      "fun_facts": [
+        "After two of its pointing wheels failed, engineers used the pressure of sunlight to keep it steady, like a kayak steering into the current.",
+        "The team first thought the K2 mission could manage 10 observing campaigns with the fuel left; it reached 19.",
+        "An Australian car mechanic searching its data discovered a system of four planets."
+      ],
+      "nssdca_id": "2009-011A",
+      "sources": [
+        "https://science.nasa.gov/mission/kepler/",
+        "https://science.nasa.gov/mission/kepler/in-depth/",
+        "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2009-011A"
+      ],
+      "image": {
+        "url": "https://images-assets.nasa.gov/image/ACD18-0204-002/ACD18-0204-002~large.jpg?w=1920&h=1080&fit=clip&crop=faces%2Cfocalpoint",
+        "credit": "NASA/Ames Research Center/W. Stenzel/D. Rutter",
+        "page": "https://science.nasa.gov/mission/kepler/"
+      },
+      "notes": "launch_date is U.S. Eastern time as science.nasa.gov gives it (10:49 p.m. March 6, 2009 EST); in Universal Time that is 03:49:57 on March 7, 2009, the date NSSDCA lists (2009-03-07). arrival_date is null because Kepler orbits the Sun and did not travel to a destination; it began its operational mission on May 13, 2009. The image is an illustration."
+    }
+  ]
+}
