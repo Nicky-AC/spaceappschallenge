@@ -17,6 +17,8 @@ The child chooses a place (the Moon, Mars or Beyond) and taps a glowing dot. Eac
 - **How it went quiet** and **where it is now**;
 - **Check the facts**, with links to the NASA pages.
 
+The page also has a game, **Sentinel Run** (`game.html`): the child is an astronaut who runs across the Moon or Mars and jumps over rocks and craters while the machines of that world go by on the horizon. Every time the astronaut falls, the nearest machine shows one of its facts, with a link to its story. Gravity in the game keeps the real order: it is weaker on the Moon than on Mars, so jumps on the Moon are higher and slower.
+
 A counter ("Found 3 of 17") invites the child to find all 17 machines: the Apollo 11 landing stage, the Apollo 15 Moon buggy, the Apollo 12 science station, Surveyor 3, Viking 1 and 2, Sojourner, Spirit, Opportunity, Phoenix, InSight, Ingenuity, Kepler, NEAR Shoemaker, Dawn, and Pioneer 10 and 11.
 
 ## How it works
@@ -26,6 +28,7 @@ A single static web page: HTML, CSS and plain JavaScript, with no libraries and 
 | File | Content |
 |---|---|
 | `index.html` | The page: map, pins, story panel, progress counter. |
+| `game.html` | Sentinel Run, the jumping game. It reads its facts from the same story cards. |
 | `data/stories.js` | The 17 story cards shown on the page. |
 | `data/artifacts.json` | The facts collected from NASA pages, each entry with its sources and notes on where two NASA pages disagree. |
 | `demo/` | The 7-slide demo (HTML source, screenshots and PDF). |

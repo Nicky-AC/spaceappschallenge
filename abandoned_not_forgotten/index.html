@@ -55,6 +55,7 @@
   }
   .tab[aria-selected="true"] { background: var(--pin); border-color: var(--pin); color: var(--pin-ink); }
   .tab .n { opacity: .75; font-weight: 500; margin-left: 4px; }
+  .tab.game { text-decoration: none; color: var(--text); display: inline-flex; align-items: center; border-color: var(--found); }
 
   .progress { display: flex; align-items: center; gap: 10px; font-size: 15px; color: var(--muted); }
   .progress b { color: var(--found); font-size: 17px; }
@@ -175,6 +176,7 @@
 
   <div class="bar">
     <div class="tabs" role="tablist" aria-label="Choose a place" id="tabs"></div>
+    <a class="tab game" href="game.html">&#9654; Play Sentinel Run</a>
     <div class="progress" aria-live="polite">
       <span>Found <b id="count">0</b> of <span id="total">0</span></span>
       <span class="meter" aria-hidden="true"><i id="meter"></i></span>
@@ -388,7 +390,8 @@
         el('p', { class: 'big', text: '🔭', 'aria-hidden': 'true' }),
         el('h2', { text: 'Pick a dot on the map' }),
         el('p', { text: 'Each glowing dot is a real machine that people built, sent into space and had to leave there. Tap one to read what it was, what it discovered and where it is today.' }),
-        el('p', { text: 'Use the buttons at the top to travel between the Moon, Mars and the places beyond. Can you find all ' + ALL.length + '?' })
+        el('p', { text: 'Use the buttons at the top to travel between the Moon, Mars and the places beyond. Can you find all ' + ALL.length + '?' }),
+        el('p', { text: 'Want to play? In Sentinel Run you are an astronaut jumping over rocks and craters, and every fall teaches you a fact.' })
       ]));
       return;
     }

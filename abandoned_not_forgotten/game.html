@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sentinel Run: a game from Sentinels of Silence</title>
+<meta name="description" content="Run across the Moon or Mars as an astronaut, jump over rocks and craters, and learn a real fact about a NASA machine every time you fall.">
+<meta name="generator" content="Code and text drafted with AI assistance (Claude, Anthropic) and reviewed by the author. Facts from NASA sources listed on each story card.">
+<style>
+  :root {
+    --bg: #0a0d16; --panel: #141a2b; --panel-2: #1c2438; --line: #2b3550;
+    --text: #f1f4fb; --muted: #aab4cc; --pin: #ffb84d; --pin-ink: #2a1a00;
+    --found: #5fd6bd; --link: #9cc7ff; --radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 17px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  a { color: var(--link); }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  :focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 0 16px; }
+  header { padding: 22px 0 10px; }
+  .back { display: inline-block; margin-bottom: 10px; font-weight: 600; }
+  .eyebrow { font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--pin); margin: 0 0 6px; }
+  h1 { font-size: clamp(28px, 5vw, 44px); line-height: 1.05; margin: 0 0 8px; letter-spacing: -.02em; }
+  .lede { color: var(--muted); margin: 0; max-width: 60ch; }
+  .bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; margin: 16px 0 10px; }
+  .tabs { display: flex; gap: 8px; }
+  .tab { background: var(--panel); border: 2px solid var(--line); border-radius: 999px; padding: 9px 18px; font-weight: 650; min-height: 44px; }
+  .tab[aria-pressed="true"] { background: var(--pin); border-color: var(--pin); color: var(--pin-ink); }
+  .score { color: var(--muted); font-size: 15px; }
+  .score b { color: var(--found); font-size: 17px; }
+  .play { position: relative; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: #05070c; touch-action: manipulation; }
+  canvas { display: block; width: 100%; height: auto; }
+  .over { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; padding: 12px; background: rgba(6, 8, 14, .72); }
+  .over.show { display: flex; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; max-width: 560px; width: 100%; max-height: 100%; overflow: auto; }
+  .card .where { color: var(--muted); font-size: 14px; margin: 0 0 4px; }
+  .card h2 { font-size: 15px; letter-spacing: .1em; text-transform: uppercase; color: var(--pin); margin: 0 0 6px; }
+  .card .fact { font-size: 20px; line-height: 1.35; font-weight: 600; margin: 0 0 6px; }
+  .card .who { color: var(--muted); margin: 0 0 14px; font-size: 15px; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  .btn { min-height: 46px; border-radius: 10px; padding: 8px 18px; font-weight: 700; border: 1px solid var(--line); background: var(--panel-2); text-decoration: none; color: var(--text); display: inline-flex; align-items: center; }
+  .btn.main { background: var(--pin); border-color: var(--pin); color: var(--pin-ink); }
+  .how { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 14px 0 0; }
+  .how div { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+  .how b { display: block; color: var(--pin); margin-bottom: 2px; }
+  footer { color: var(--muted); font-size: 13.5px; padding: 22px 0 36px; }
+  footer p { margin: 0 0 8px; max-width: 90ch; }
+  @media (max-width: 700px) {
+    .over { position: static; background: none; padding: 10px; }
+    .card { padding: 12px 14px; max-height: none; }
+    .card .fact { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="back" href="index.html">&larr; Back to the map</a>
+    <p class="eyebrow">A game from Sentinels of Silence</p>
+    <h1>Sentinel Run</h1>
+    <p class="lede">You are an astronaut on a long walk past the silent machines. Jump over the rocks and the craters. Every time you fall, one of the machines tells you something it discovered.</p>
+  </header>
+
+  <div class="bar">
+    <div class="tabs" role="group" aria-label="Choose where to run">
+      <button type="button" class="tab" id="w-moon" aria-pressed="true">The Moon</button>
+      <button type="button" class="tab" id="w-mars" aria-pressed="false">Mars</button>
+    </div>
+    <div class="score">Distance <b id="dist">0</b> m &middot; Best <b id="best">0</b> m</div>
+  </div>
+
+  <div class="play" id="play">
+    <canvas id="c" width="900" height="380" role="img" aria-label="Game: an astronaut runs and jumps over rocks and craters"></canvas>
+    <div class="over" id="over" aria-live="polite">
+      <div class="card" id="card"></div>
+    </div>
+  </div>
+
+  <div class="how">
+    <div><b>How to play</b>Press the space bar or tap the game to jump. Hold a little longer to jump higher.</div>
+    <div><b>Moon or Mars?</b>Gravity is weaker on the Moon than on Mars, so on the Moon you jump higher and come down more slowly.</div>
+    <div><b>Look behind you</b>The shapes on the horizon are the real machines from the map, each one in its own world.</div>
+  </div>
+
+  <footer>
+    <p>The facts shown in the game are the same ones as on the story cards of the map, taken from the NASA pages listed there. The landscape and the distances in the game are a drawing, not a map.</p>
+    <p>Made by team Centinela del Silencio for the 2026 NASA Space Apps Challenge. Code and first drafts of the texts written with AI assistance (Claude, by Anthropic) and checked by the author. Not endorsed by NASA.</p>
+  </footer>
+</div>
+
+<script src="data/stories.js"></script>
+<script>
+(function () {
+  'use strict';
+  var NARROW = window.innerWidth < 700;      /* phones: show less of the road, but bigger */
+  var W = NARROW ? 560 : 900, H = 380, G = 312, TOP = NARROW ? 430 : 560;   /* logical size, ground line, top speed */
+  var canvas = document.getElementById('c'), ctx = canvas.getContext('2d');
+  canvas.width = W;
+  var over = document.getElementById('over'), card = document.getElementById('card');
+  var ALL = window.ARTIFACTS || [];
+  var WORLDS = {
+    /* Gravity in the game keeps the real proportion: the Moon's pull is weaker than the pull of Mars. */
+    moon: { name: 'the Moon', g: 700, sky: ['#04060b', '#0b0f1c'], far: '#2b2d33', near: '#44464d', ground: '#6b6d74', dark: '#3a3c42', text: '#f1f4fb', stars: true },
+    mars: { name: 'Mars', g: 1600, sky: ['#b9794d', '#ecc39a'], far: '#a5633c', near: '#8f4f2d', ground: '#b5683c', dark: '#6e3a1f', text: '#2a1408', stars: false }
+  };
+  var JUMP = 600, KEY = 'sentinel-run-best-v1';
+  var S = { world: 'moon', mode: 'ready', t: 0, speed: 0, dist: 0, y: G, vy: 0, held: false, obs: [], marks: [], nextObs: 0, nextMark: 0, queue: [], last: null, lockUntil: 0, best: {} };
+  var PX = 130;
+  var stars = [], pebbles = [];
+  for (var i = 0; i < 70; i++) stars.push([Math.random() * W, Math.random() * (G - 90), Math.random() * 1.4 + 0.4]);
+  for (i = 0; i < 26; i++) pebbles.push([Math.random() * W, G + 8 + Math.random() * (H - G - 14), Math.random() * 2 + 1]);
+  try { S.best = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { S.best = {}; }
+
+  function rnd(a, b) { return a + Math.random() * (b - a); }
+  function world() { return WORLDS[S.world]; }
+  function shuffle(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function nextSentinel() {
+    if (!S.queue.length) S.queue = shuffle(ALL.filter(function (a) { return a.world === S.world; }));
+    return S.queue.pop();
+  }
+
+  function reset(mode) {
+    S.mode = mode; S.t = 0; S.speed = 300; S.dist = 0; S.y = G; S.vy = 0; S.held = false;
+    S.obs = []; S.marks = []; S.nextObs = 520; S.nextMark = 260; S.last = null;
+    over.classList.remove('show');
+    hud();
+  }
+  function hud() {
+    document.getElementById('dist').textContent = Math.floor(S.dist / 10);
+    document.getElementById('best').textContent = S.best[S.world] || 0;
+  }
+  function setWorld(w) {
+    S.world = w; S.queue = [];
+    document.getElementById('w-moon').setAttribute('aria-pressed', String(w === 'moon'));
+    document.getElementById('w-mars').setAttribute('aria-pressed', String(w === 'mars'));
+    reset('ready'); draw();
+  }
+
+  /* ---------- input ---------- */
+  function press() {
+    if (performance.now() < S.lockUntil) return;
+    if (S.mode === 'ready') { reset('run'); }
+    if (S.mode === 'run') { S.held = true; if (S.y >= G) S.vy = -JUMP; }
+  }
+  function release() {
+    S.held = false;
+    if (S.mode === 'run' && S.vy < 0) S.vy *= 0.45;   /* short tap = short hop */
+  }
+  window.addEventListener('keydown', function (e) {
+    if (e.code !== 'Space' && e.code !== 'ArrowUp' && e.code !== 'KeyW') return;
+    var t = e.target; if (t && t.closest && t.closest('button, a')) return;
+    e.preventDefault(); if (!e.repeat) press();
+  });
+  window.addEventListener('keyup', function (e) { if (e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'KeyW') release(); });
+  canvas.addEventListener('pointerdown', function (e) { e.preventDefault(); press(); });
+  window.addEventListener('pointerup', release);
+  document.getElementById('w-moon').addEventListener('click', function () { setWorld('moon'); });
+  document.getElementById('w-mars').addEventListener('click', function () { setWorld('mars'); });
+  document.addEventListener('visibilitychange', function () { lastTime = 0; });
+
+  /* ---------- game over: a machine shares a fact ---------- */
+  function el(tag, attrs, text) {
+    var n = document.createElement(tag);
+    if (attrs) Object.keys(attrs).forEach(function (k) { n.setAttribute(k, attrs[k]); });
+    if (text != null) n.textContent = text;
+    return n;
+  }
+  function gameOver() {
+    S.mode = 'over';
+    var m = Math.floor(S.dist / 10);
+    if (m > (S.best[S.world] || 0)) { S.best[S.world] = m; try { localStorage.setItem(KEY, JSON.stringify(S.best)); } catch (e) {} }
+    hud();
+    /* The machine that speaks is the one on screen closest to the astronaut. */
+    var seen = S.marks.filter(function (k) { return k.x < W + 20; }).sort(function (p, q) { return Math.abs(p.x - PX) - Math.abs(q.x - PX); })[0];
+    var a = (seen && seen.a) || S.last || nextSentinel();
+    card.textContent = '';
+    if (a) {
+      var facts = (a.science || []).concat(a.today ? [a.today] : []);
+      var fact = facts[Math.floor(Math.random() * facts.length)] || a.tagline;
+      card.appendChild(el('p', { class: 'where' }, 'You ran ' + m + ' m on ' + world().name + ' and fell near ' + (a.short || a.name) + '.'));
+      card.appendChild(el('h2', null, 'Did you know?'));
+      card.appendChild(el('p', { class: 'fact' }, fact));
+      card.appendChild(el('p', { class: 'who' }, a.name + ': ' + (a.tagline || '')));
+    } else {
+      card.appendChild(el('p', { class: 'fact' }, 'You ran ' + m + ' m.'));
+    }
+    var btns = el('div', { class: 'btns' });
+    var again = el('button', { type: 'button', class: 'btn main' }, 'Try again');
+    again.addEventListener('click', function () { reset('run'); canvas.focus(); });
+    btns.appendChild(again);
+    if (a) btns.appendChild(el('a', { class: 'btn', href: 'index.html#' + a.id }, 'Read its story'));
+    card.appendChild(btns);
+    over.classList.add('show');
+    S.lockUntil = performance.now() + 700;
+    setTimeout(function () { if (S.mode === 'over') again.focus(); }, 700);
+  }
+
+  /* ---------- update ---------- */
+  function spawnObstacle() {
+    var w = world(), air = 2 * JUMP / w.g, jumpDist = S.speed * air;
+    var crater = Math.random() < 0.38;
+    var o = crater
+      ? { type: 'crater', x: W + 40, w: Math.min(rnd(70, 120), jumpDist * 0.45), h: 0 }
+      : { type: 'rock', x: W + 40, w: rnd(28, 50), h: rnd(26, 52), seed: Math.random() };
+    S.obs.push(o);
+    S.nextObs = o.w + Math.max(340, jumpDist * 0.95) + rnd(0, 340);
+  }
+  function update(dt) {
+    var w = world();
+    S.t += dt;
+    S.speed = Math.min(TOP, 300 + S.t * 5);
+    var dx = S.speed * dt;
+    S.dist += dx;
+    S.vy += w.g * dt; S.y += S.vy * dt;
+    if (S.y >= G) { S.y = G; S.vy = 0; if (S.held) S.vy = -JUMP; }
+    S.nextObs -= dx; if (S.nextObs <= 0) spawnObstacle();
+    S.nextMark -= dx * 0.45;
+    if (S.nextMark <= 0) { var a = nextSentinel(); if (a) S.marks.push({ a: a, x: W + 80 }); S.nextMark = rnd(520, 760); }
+    S.marks.forEach(function (m) { m.x -= dx * 0.45; if (m.x < W - 120) S.last = m.a; });
+    S.marks = S.marks.filter(function (m) { return m.x > -160; });
+    for (var i = 0; i < S.obs.length; i++) {
+      var o = S.obs[i]; o.x -= dx;
+      if (o.type === 'rock') {
+        if (PX + 11 > o.x + 5 && PX - 11 < o.x + o.w - 5 && S.y > G - o.h + 8) return gameOver();
+      } else if (S.y >= G - 1 && PX > o.x + 14 && PX < o.x + o.w - 14) return gameOver();
+    }
+    S.obs = S.obs.filter(function (o) { return o.x + o.w > -20; });
+    hud();
+  }
+
+  /* ---------- drawing ---------- */
+  function hills(off, base, amp, color) {
+    ctx.fillStyle = color; ctx.beginPath(); ctx.moveTo(0, H);
+    for (var x = 0; x <= W; x += 12) {
+      var u = x + off;
+      ctx.lineTo(x, base - amp * (0.55 * Math.sin(u * 0.006) + 0.3 * Math.sin(u * 0.017 + 1.3) + 0.15 * Math.sin(u * 0.041)));
+    }
+    ctx.lineTo(W, H); ctx.closePath(); ctx.fill();
+  }
+  function machine(m) {
+    var a = m.a, x = m.x, y = G - 34, k = (a.kind || '').toLowerCase();
+    ctx.save(); ctx.translate(x, y);
+    ctx.fillStyle = world().dark; ctx.strokeStyle = world().dark; ctx.lineWidth = 3; ctx.lineCap = 'round';
+    if (k.indexOf('rover') >= 0) {
+      ctx.fillRect(-22, -16, 44, 12);
+      [-18, 0, 18].forEach(function (cx) { ctx.beginPath(); ctx.arc(cx, 2, 6, 0, 7); ctx.fill(); });
+      ctx.beginPath(); ctx.moveTo(8, -16); ctx.lineTo(8, -36); ctx.stroke(); ctx.fillRect(2, -42, 14, 7);
+    } else if (k.indexOf('helicopter') >= 0) {
+      ctx.fillRect(-7, -14, 14, 12);
+      ctx.beginPath(); ctx.moveTo(0, -14); ctx.lineTo(0, -26); ctx.moveTo(-24, -26); ctx.lineTo(24, -26); ctx.moveTo(-6, -2); ctx.lineTo(-10, 8); ctx.moveTo(6, -2); ctx.lineTo(10, 8); ctx.stroke();
+    } else {
+      ctx.beginPath(); ctx.moveTo(-18, -8); ctx.lineTo(-12, -24); ctx.lineTo(12, -24); ctx.lineTo(18, -8); ctx.closePath(); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(-14, -8); ctx.lineTo(-24, 8); ctx.moveTo(14, -8); ctx.lineTo(24, 8); ctx.moveTo(0, -8); ctx.lineTo(0, 8); ctx.moveTo(4, -24); ctx.lineTo(10, -38); ctx.stroke();
+      ctx.beginPath(); ctx.arc(10, -40, 7, Math.PI * 0.1, Math.PI * 1.1); ctx.fill();
+    }
+    ctx.restore();
+    ctx.font = '600 13px system-ui, sans-serif'; ctx.textAlign = 'center';
+    var label = a.short || a.name, tw = ctx.measureText(label).width + 14;
+    ctx.fillStyle = 'rgba(8,10,18,.8)'; ctx.fillRect(x - tw / 2, y - 66, tw, 20);
+    ctx.fillStyle = '#fff'; ctx.fillText(label, x, y - 52);
+  }
+  function rock(o) {
+    var x = o.x, w = o.w, h = o.h, s = o.seed;
+    ctx.fillStyle = world().dark; ctx.beginPath();
+    ctx.moveTo(x, G); ctx.lineTo(x + w * 0.12, G - h * (0.55 + 0.2 * s)); ctx.lineTo(x + w * (0.35 + 0.15 * s), G - h);
+    ctx.lineTo(x + w * 0.78, G - h * (0.7 + 0.2 * (1 - s))); ctx.lineTo(x + w, G); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,.14)'; ctx.beginPath();
+    ctx.moveTo(x + w * 0.12, G - h * (0.55 + 0.2 * s)); ctx.lineTo(x + w * (0.35 + 0.15 * s), G - h); ctx.lineTo(x + w * 0.45, G - h * 0.45); ctx.closePath(); ctx.fill();
+  }
+  function crater(o) {
+    var cx = o.x + o.w / 2;
+    ctx.fillStyle = 'rgba(0,0,0,.62)'; ctx.beginPath(); ctx.ellipse(cx, G + 7, o.w / 2, 11, 0, 0, 7); ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,.28)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(cx, G + 7, o.w / 2, 11, 0, Math.PI, 2 * Math.PI); ctx.stroke();
+  }
+  function astronaut() {
+    var x = PX, y = S.y, air = y < G - 1, t = S.dist * 0.045, sw = S.mode === 'run' ? Math.sin(t) : 0;
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.fillStyle = 'rgba(0,0,0,.3)'; ctx.beginPath(); ctx.ellipse(x, G + 4, 16 - Math.min(10, (G - y) / 14), 4, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#9aa3b5'; ctx.fillRect(x - 17, y - 54, 11, 26);                       /* life-support backpack */
+    ctx.strokeStyle = '#e9edf5'; ctx.lineWidth = 8;                                        /* legs */
+    ctx.beginPath();
+    if (air) { ctx.moveTo(x - 3, y - 24); ctx.lineTo(x - 9, y - 6); ctx.moveTo(x + 3, y - 24); ctx.lineTo(x + 10, y - 9); }
+    else { ctx.moveTo(x - 2, y - 24); ctx.lineTo(x - 2 + sw * 11, y - 4); ctx.moveTo(x + 2, y - 24); ctx.lineTo(x + 2 - sw * 11, y - 4); }
+    ctx.stroke();
+    ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.roundRect(x - 11, y - 52, 22, 30, 8); ctx.fill();   /* suit */
+    ctx.fillStyle = '#ffb84d'; ctx.fillRect(x - 5, y - 44, 10, 5);
+    ctx.strokeStyle = '#e9edf5'; ctx.lineWidth = 7;                                        /* arm */
+    ctx.beginPath(); ctx.moveTo(x + 1, y - 44); ctx.lineTo(x + 1 + (air ? 10 : -sw * 9), y - (air ? 36 : 28)); ctx.stroke();
+    ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(x + 1, y - 62, 14, 0, 7); ctx.fill();          /* helmet */
+    ctx.fillStyle = '#18213d'; ctx.beginPath(); ctx.ellipse(x + 5, y - 62, 8.5, 9.5, 0, 0, 7); ctx.fill();
+    ctx.strokeStyle = '#ffcf7a'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x + 5, y - 62, 6, Math.PI * 1.1, Math.PI * 1.6); ctx.stroke();
+  }
+  function draw() {
+    var w = world(), d = S.dist;
+    var sky = ctx.createLinearGradient(0, 0, 0, G); sky.addColorStop(0, w.sky[0]); sky.addColorStop(1, w.sky[1]);
+    ctx.fillStyle = sky; ctx.fillRect(0, 0, W, H);
+    if (w.stars) {
+      ctx.fillStyle = '#dfe6f7';
+      stars.forEach(function (s) { var x = ((s[0] - d * 0.01) % W + W) % W; ctx.fillRect(x, s[1], s[2], s[2]); });
+      ctx.fillStyle = '#3b74c9'; ctx.beginPath(); ctx.arc(W - 140, 74, 26, 0, 7); ctx.fill();                 /* the Earth in the sky */
+      ctx.fillStyle = 'rgba(255,255,255,.75)'; ctx.beginPath(); ctx.ellipse(W - 148, 66, 12, 5, -0.4, 0, 7); ctx.ellipse(W - 130, 84, 10, 4, 0.3, 0, 7); ctx.fill();
+      ctx.fillStyle = '#04060b'; ctx.beginPath(); ctx.arc(W - 128, 70, 26, 0, 7); ctx.globalAlpha = 0.45; ctx.fill(); ctx.globalAlpha = 1;
+    } else {
+      ctx.fillStyle = 'rgba(255,244,214,.9)'; ctx.beginPath(); ctx.arc(W - 160, 80, 13, 0, 7); ctx.fill();   /* the Sun looks small from Mars */
+    }
+    hills(d * 0.12, G - 40, 46, w.far);
+    hills(d * 0.25 + 400, G - 12, 26, w.near);
+    S.marks.forEach(machine);
+    ctx.fillStyle = w.ground; ctx.fillRect(0, G, W, H - G);
+    ctx.fillStyle = 'rgba(0,0,0,.16)'; ctx.fillRect(0, G, W, 3);
+    ctx.fillStyle = 'rgba(0,0,0,.22)';
+    pebbles.forEach(function (p) { var x = ((p[0] - d) % W + W) % W; ctx.fillRect(x, p[1], p[2] * 3, p[2]); });
+    S.obs.forEach(function (o) { if (o.type === 'rock') rock(o); else crater(o); });
+    astronaut();
+    if (S.mode === 'ready') {
+      ctx.fillStyle = 'rgba(6,8,14,.55)'; ctx.fillRect(0, 0, W, H);
+      ctx.fillStyle = '#fff'; ctx.textAlign = 'center';
+      ctx.font = '700 34px system-ui, sans-serif'; ctx.fillText(NARROW ? 'Tap to start' : 'Press SPACE or tap to start', W / 2, H / 2 - 6);
+      ctx.font = '500 19px system-ui, sans-serif'; ctx.fillText(NARROW ? 'You are on ' + w.name + '. Jump the rocks and craters.' : 'You are on ' + w.name + '. Jump over the rocks and the craters.', W / 2, H / 2 + 28);
+    }
+  }
+
+  /* ---------- loop ---------- */
+  var lastTime = 0;
+  function frame(now) {
+    var dt = lastTime ? Math.min(0.05, (now - lastTime) / 1000) : 0; lastTime = now;
+    if (S.mode === 'run' && dt) update(dt);
+    draw();
+    requestAnimationFrame(frame);
+  }
+  canvas.tabIndex = 0;
+  window.sentinelRun = { state: S, update: update, press: press, release: release, setWorld: setWorld, PX: PX, G: G, JUMP: JUMP, worlds: WORLDS };   /* used by the automatic test */
+  setWorld(location.hash === '#mars' ? 'mars' : 'moon');
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
